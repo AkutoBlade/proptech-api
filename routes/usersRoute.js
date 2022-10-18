@@ -89,9 +89,10 @@ router.post('/register', bodyParser.json(), async (req, res) => {
     let sql = `INSERT INTO users (userName, userEmail, userNo, userPassword, userAddress , userStatus, createdDate)VALUES (?, ?, ?, ?, ?, ?, ?)`;
     db.query(sql, [bd.userName, bd.userEmail, bd.userNo, bd.userPassword, bd.userAddress, bd.userStatus,bd.createdDate], (err, results) => {
       if (err){
-          return {
-            msg: "The email already exist"
-          }
+            res.json({
+              msg: results,
+              token: token
+            })
       }
       else {
         res.redirect('/login')
