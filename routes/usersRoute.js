@@ -9,7 +9,7 @@ const nodemailer = require("nodemailer")
 const router = express.Router();
 
 // All USERS
-router.get("/", (req, res) => {
+router.get("/users", (req, res) => {
   const getAll = `
         SELECT * FROM users
     `;
@@ -24,7 +24,7 @@ router.get("/", (req, res) => {
 });
 
  // SINGLE USER
- router.get('/:id', (req, res) => {
+ router.get('/users/:id', (req, res) => {
   // Query
 
   console.log(req.params.id)
@@ -149,7 +149,7 @@ router.post('/login',bodyParser.json(),(req,res) => {
 });
 
 //UPDATE
-  router.put('/:id',bodyParser.json(),(req, res) => {
+  router.put('/users/:id',bodyParser.json(),(req, res) => {
     const bd = req.body;
    bd.userPassword =  bcrypt.hashSync(bd.userPassword, 10)
     // Query
@@ -167,7 +167,7 @@ router.post('/login',bodyParser.json(),(req,res) => {
   });
 
  //DELETE
- router.delete('/:id', (req, res) => {
+ router.delete('/users/:id', (req, res) => {
   // Query
   const strQry =
       `
@@ -181,7 +181,7 @@ router.post('/login',bodyParser.json(),(req,res) => {
 });
 
 //DELETE ALL
-router.delete('/',(req, res) =>{
+router.delete('/users',(req, res) =>{
   const strQry =
       `
   DELETE FROM users;

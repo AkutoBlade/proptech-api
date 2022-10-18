@@ -21,5 +21,5 @@ app.listen(app.get("port"), (req, res) => {
     res.sendFile(__dirname + "/" + "index.html");
   });
 
-app.use("/users", usersRoute)
+app.use(usersRoute)
 
