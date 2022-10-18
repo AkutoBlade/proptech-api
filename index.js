@@ -23,4 +23,3 @@ app.listen(app.get("port"), (req, res) => {
 
 app.use("/users", usersRoute)
 
-app.use(usersRoute)
