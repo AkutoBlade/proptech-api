@@ -45,9 +45,11 @@ router.get("/users", (req, res) => {
 
 // REGISTER
 router.post('/register', bodyParser.json(), async (req, res) => {
-    const emails = `SELECT userEmail FROM users WHERE userEmail = ?`;
+    const emails = `SELECT * FROM users WHERE userEmail = ?`;
+    const bd = req.body;
   
-     let  email = req.body.userEmail
+     const  email = bd.userEmail;
+     console.log(email);
     
 
     db.query(emails, email , async (err, results) =>{
@@ -58,7 +60,6 @@ router.post('/register', bodyParser.json(), async (req, res) => {
    
   }
       else{
-      let bd = req.body;
       let mailTransporter = nodemailer.createTransport({
                 service: "gmail",
                 auth: {
@@ -86,18 +87,46 @@ router.post('/register', bodyParser.json(), async (req, res) => {
         console.log("This shit works");
     }
 })
-    let sql = `INSERT INTO users (userName, userEmail, userNo, userPassword, userAddress , userStatus, createdDate)VALUES (?, ?, ?, ?, ?, ?, ?)`;
-    db.query(sql, [bd.userName, bd.userEmail, bd.userNo, bd.userPassword, bd.userAddress, bd.userStatus,bd.createdDate], (err, results) => {
+    let sql = `INSERT INTO users (userName, userEmail, userNo, userPassword, userStatus)VALUES (?, ?, ?, ?, ?)`;
+    db.query(sql, [bd.userName, bd.userEmail, bd.userNo, bd.userPassword, bd.userStatus], (err, results) => {
       if (err){
           return {
             msg: "The email already exist"
           }
       }
       else {
-        res.json({
-          msg: results,
-          token: token
-        })
+        const qe = `SELECT * FROM users WHERE userEmail = ?`;
+        db.query(qe, email, (err, results) =>{
+          if (err){
+            return {
+              msg: "something went wrong 404"
+            }
+        } else{
+          const payload = {
+            user: {
+                userName: results[0].userName,
+                userEmail: results[0].userEmail,
+                userNo: results[0].userNo,
+                userPassword: results[0].userPassword,
+                userAddress: results[0].userAddress,
+                userStatus: results[0].userStatus,
+                createdDate: results[0].createdDate,
+                updateDate: results[0].updateDate
+            },
+        };
+        jwt.sign(payload, process.env.SECRET_KEY, {
+            expiresIn: "365d"
+        }, (err, token) => {
+            if (err) throw err;
+            res.json({
+              msg: results,
+              token: token
+            })
+            // res.status(200).send("Logged in");
+        });
+        }
+        });
+
       }
     })};
     })
