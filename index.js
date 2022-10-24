@@ -1,10 +1,11 @@
 const express = require("express");
-const router = express.Router()
+const router = express.Router();
 const cors = require("cors");
 const cookieParser = require('cookie-parser');
 const app = express();
 
 const usersRoute = require("./routes/usersRoute");
+const buyerRoute = require("./routes/buyerRoute");
 
 app.set("port", process.env.PORT || 1517);
 app.use(express.json());
@@ -26,7 +27,7 @@ app.use(
 );
 
 app.use(
-  router,
+  router, usersRoute, buyerRoute,
   express.json(),
   express.urlencoded({
     extended: true,
@@ -44,6 +45,4 @@ app.listen(app.get("port"), (req, res) => {
   app.get("/", function (req, res) {
     res.sendFile(__dirname + "/" + "index.html");
   });
-
-app.use(usersRoute)
 
