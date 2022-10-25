@@ -101,9 +101,9 @@ router.patch('/leads/:id', (req, res) => {
 SET entryType = ?, leadName = ?, leadEmail = ?, leadNumber = ?, leadNote = ?, uID = ?, UpdateBy = ?
 WHERE lid = ${req.params.id}`;
 
-bd.UpdateBy= `${new Date().toISOString().slice(0, 10)}`;
+bd.UpdatedBy= `${new Date().toISOString().slice(0, 10)}`;
 
-  db.query(strQry, [bd.entryType, bd.leadName, bd.leadEmail, bd.leadNumber, bd.leadNote, bd.uID, bd.UpdateBy], (err, data) => {
+  db.query(strQry, [bd.entryType, bd.leadName, bd.leadEmail, bd.leadNumber, bd.leadNote, bd.uID, bd.UpdatedBy], (err, data) => {
       if (err) throw err;
       res.json({
         msg:`Edited`
