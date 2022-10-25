@@ -133,7 +133,7 @@ router.post('/register', bodyParser.json(),async (req, res) => {
   });
 
 // lOGIN
-router.post('/login',bodyParser.json(),auth,(req,res) => {
+router.post('/login',bodyParser.json(),(req,res) => {
   let sql = `SELECT * FROM users WHERE userEmail = ?`
   let email =  req.body.userEmail
   db.query(sql,email, async (err,results) => {
