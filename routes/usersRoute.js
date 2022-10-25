@@ -77,14 +77,12 @@ router.post('/register', bodyParser.json(), async (req, res) => {
       from: "rared.isaacs@gmail.com",
       to: `${bd.userEmail}`,
       subject: "testing our nodemailer",
-      text: "Send Dudes"
+      text: "Welcome To Sabindi Group Global"
   }
   mailTransporter.sendMail(details,(err)=>{
-    if(err) {
-        console.log("it has to go blood",err);
-    }
+    if(err)  throw  err
     else{
-        console.log("This shit works");
+        console.log("Email have been sent");
     }
 })
     let sql = `INSERT INTO users (userName, userEmail, userNo, userPassword, userStatus)VALUES (?, ?, ?, ?, ?)`;
