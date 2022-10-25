@@ -76,8 +76,8 @@ router.post('/register', bodyParser.json(), async (req, res) => {
     let details = {
       from: "rared.isaacs@gmail.com",
       to: `${bd.userEmail}`,
-      subject: "testing our nodemailer",
-      text: "Welcome To Sabindi Group Global"
+      subject: "Sabindi Group Global",
+      text: `Welcome To ${bd.userName}`
   }
   mailTransporter.sendMail(details,(err)=>{
     if(err)  throw  err

@@ -2,6 +2,7 @@ const db = require("../config/dbconnection");
 const express = require("express");
 const router = express.Router();
 const bodyParser = require('body-parser');
+const nodemailer = require("nodemailer")
 // const bodyParser = require("body-parser");
 // const bcrypt = require("bcrypt");
 // const jwt = require("jsonwebtoken");
@@ -86,7 +87,7 @@ router.post('/leads', bodyParser.json(),
                   let details = {
                     from: "rared.isaacs@gmail.com",
                     to: `${bd.leadEmail}`,
-                    subject: "testing our nodemailer",
+                    subject: "Sabindi Group Global",
                     text: "Welcome To Sabindi Group Global"
                 }
                 mailTransporter.sendMail(details,(err)=>{
