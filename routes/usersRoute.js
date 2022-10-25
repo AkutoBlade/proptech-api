@@ -3,7 +3,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const nodemailer = require("nodemailer")
+const nodemailer = require("nodemailer");
+const auth = require("../middleware/auth")
 
 // const app = express();
 const router = express.Router();
@@ -44,7 +45,7 @@ router.get("/users", (req, res) => {
 });
 
 // REGISTER
-router.post('/register', bodyParser.json(), async (req, res) => {
+router.post('/register', bodyParser.json(), auth,async (req, res) => {
     const emails = `SELECT * FROM users WHERE userEmail = ?`;
     const bd = req.body;
   
