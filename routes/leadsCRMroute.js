@@ -73,18 +73,7 @@ router.post('/leads', bodyParser.json(),
           }
       });
 
-      let details = {
-        from: "rared.isaacs@gmail.com",
-        to: `${bd.leadEmail}`,
-        subject: "testing our nodemailer",
-        text: "Welcome To Sabindi Group Global"
-    }
-    mailTransporter.sendMail(details,(err)=>{
-      if(err) throw err
-      else{
-          console.log("Email have been sent");
-      }
-  })
+
              db.query(strQry,
                  [bd.entryType, bd.leadName, bd.leadEmail, bd.leadNumber, bd.leadNote, bd.uID],
                  (err, results) => {
@@ -92,6 +81,16 @@ router.post('/leads', bodyParser.json(),
                      res.json({
                         msg:`Added Item`
                     });
+                    let details = {
+                      from: "rared.isaacs@gmail.com",
+                      to: `${bd.leadEmail}`,
+                      subject: "testing our nodemailer",
+                      text: "Welcome To Sabindi Group Global"
+                  }
+                  mailTransporter.sendMail(details,(err)=>{
+                    if(err) throw err
+                        console.log("Email have been sent");
+                })
                  })
          } catch (e) {
              console.log(`Created new lead`);
