@@ -5,7 +5,11 @@ const cookieParser = require('cookie-parser');
 const app = express();
 
 const usersRoute = require("./routes/usersRoute");
-const buyerRoute = require("./routes/buyerRoute");
+const leadsCRMroute = require("./routes/leadsCRMroute");
+const quotesRoute = require("./routes/quotesRoute");
+const purchaseOrderRoute = require("./routes/purchaseOrderRoute");
+const materialsRoute = require("./routes/materialRoute");
+const workOrderRoute = require("./routes/workOrderRoute");
 
 app.set("port", process.env.PORT || 1517);
 app.use(express.json());
@@ -27,7 +31,7 @@ app.use(
 );
 
 app.use(
-  router, usersRoute, buyerRoute,
+  router, usersRoute, leadsCRMroute, quotesRoute, purchaseOrderRoute, materialsRoute, workOrderRoute,
   express.json(),
   express.urlencoded({
     extended: true,

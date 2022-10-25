@@ -79,78 +79,11 @@ router.post('/leads', bodyParser.json(),
          }
      });
 
-router.get("/sellers", (req, res) => {
-  const getAll = `
-  SELECT * FROM buyerSeller where entryType = 'seller'
-    `;
-
-  db.query(getAll, (err, results) => {
-    if (err) throw err;
-    res.json({
-      status: 200,
-      buyers: results,
-    });
-  });
-});
-
 // Get single buyer
-router.get("/:id", (req, res) => {
+router.get("leads/:id", (req, res) => {
   try {
-    let sql = `SELECT * FROM buyers WHERE bid = ${req.params.bid}`; //Use backticks (`) whenever you want to use something that involves $(not money, the sign)
+    let sql = `SELECT * FROM buyers WHERE lid = ${req.params.lid}`; //Use backticks (`) whenever you want to use something that involves $(not money, the sign)
     con.query(sql, (err, result) => {
-      if (err) throw err;
-      res.send(result);
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
-  }
-});
-
-// Update a user
-// When editing, you can user PATCH or PUT
-//  PATCH will only change information inputted, meaning if there are 4 rows and you only sent information for 3,
-//  the row without new information will remain the same.
-// PUT however will always change EVERYTHING, meaning if there are 4 rows and you put in information for 3, the
-// row without new information will become empty
-router.patch("/:id", (req, res) => {
-  try {
-    let sql = `UPDATE buyers SET ? WHERE bid = ${req.body.bid}`;
-    const {
-      contactName,
-      contactEmail,
-      contactNo,
-      budget,
-      bathrooms,
-      bedrooms,
-      propertySize,
-      propertyType,
-      propertyArea,
-      parkingBay,
-      yardSize,
-      kitchenType,
-      petFriendly,
-      contactStatus,
-      note,
-    } = req.body;
-    let buyer = {
-      contactName,
-      contactEmail,
-      contactNo,
-      budget,
-      bathrooms,
-      bedrooms,
-      propertySize,
-      propertyType,
-      propertyArea,
-      parkingBay,
-      yardSize,
-      kitchenType,
-      petFriendly,
-      contactStatus,
-      note,
-    };
-    con.query(sql, buyer, (err, result) => {
       if (err) throw err;
       res.send(result);
     });
@@ -165,12 +98,14 @@ router.patch('/leads/:id', (req, res) => {
   // Query
   const strQry =
       `UPDATE leads
-SET entryType = ?, leadName = ?, leadEmail = ?, leadNumber = ?, leadNote = ?, uID = ?
+SET entryType = ?, leadName = ?, leadEmail = ?, leadNumber = ${bd.leadNumber}, leadNote = ?, uID = ?
 WHERE lid = ${req.params.id}`;
 
   db.query(strQry, [bd.entryType, bd.leadName, bd.leadEmail, bd.leadNumber, bd.leadNote, bd.uID], (err, data) => {
       if (err) throw err;
-      res.send(`number of affected record/s: ${data.affectedRows}`);
+      res.json({
+        msg:`Edited`
+    });
   })
 });
 
