@@ -98,7 +98,7 @@ router.patch('/leads/:id', (req, res) => {
   // Query
   const strQry =
       `UPDATE leads
-SET entryType = ?, leadName = ?, leadEmail = ?, leadNumber = ?, leadNote = ?, uID = ?, UpdateBy = ?
+SET entryType = ?, leadName = ?, leadEmail = ?, leadNumber = ?, leadNote = ?, uID = ?, UpdatedBy = ?
 WHERE lid = ${req.params.id}`;
 
 bd.UpdatedBy= `${new Date().toISOString().slice(0, 10)}`;
