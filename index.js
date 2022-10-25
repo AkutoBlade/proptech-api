@@ -8,7 +8,7 @@ const usersRoute = require("./routes/usersRoute");
 const leadsCRMroute = require("./routes/leadsCRMroute");
 const quotesRoute = require("./routes/quotesRoute");
 const purchaseOrderRoute = require("./routes/purchaseOrderRoute");
-const materialsRoute = require("./routes/materialRoute");
+const materialsRoute = require("./routes/materialsRoute");
 const workOrderRoute = require("./routes/workOrderRoute");
 
 app.set("port", process.env.PORT || 1517);
