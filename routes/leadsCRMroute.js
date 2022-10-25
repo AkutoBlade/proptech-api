@@ -55,7 +55,7 @@ WHERE lid = ${req.params.id};
 });
 
 router.post('/leads', bodyParser.json(),
-     (req, res) => {
+    async (req, res) => {
          try {
 
              const bd = req.body;
