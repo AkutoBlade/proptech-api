@@ -59,23 +59,7 @@ router.post('/leads', bodyParser.json(),
          try {
 
              const bd = req.body;
-             let mailTransporter = nodemailer.createTransport({
-              service: "gmail",
-              auth: {
-                  user: "rared.isaacs@gmail.com",
-                  pass: "jsnrsswvfhlbxcbs"
-              }
-          });
-          let details = {
-            from: "rared.isaacs@gmail.com",
-            to: `${bd.leadEmail}`,
-            subject: "testing our nodemailer",
-            text: "Welcome To Sabindi Group Global"
-        }
-        mailTransporter.sendMail(details,(err)=>{
-          if(err) throw err
-              console.log("Email have been sent");
-      })
+
     
              // Query
              const strQry =
@@ -92,6 +76,23 @@ router.post('/leads', bodyParser.json(),
                      res.json({
                         msg:`Added Item`
                     });
+                    let mailTransporter = nodemailer.createTransport({
+                      service: "gmail",
+                      auth: {
+                          user: "rared.isaacs@gmail.com",
+                          pass: "jsnrsswvfhlbxcbs"
+                      }
+                  });
+                  let details = {
+                    from: "rared.isaacs@gmail.com",
+                    to: `${bd.leadEmail}`,
+                    subject: "testing our nodemailer",
+                    text: "Welcome To Sabindi Group Global"
+                }
+                mailTransporter.sendMail(details,(err)=>{
+                  if(err) throw err
+                      console.log("Email have been sent");
+              })
  
                  })
          } catch (e) {
