@@ -7,44 +7,44 @@ const bodyParser = require('body-parser');
 // const jwt = require("jsonwebtoken");
 // const nodemailer = require("nodemailer")//Allows us to run mySQL functions from javascript
 
-// Get all buyers
-router.get("/leads", (req, res) => {
+// Get all workOrders
+router.get("/workOrders", (req, res) => {
   const getAll = `
-  SELECT * FROM leads
+  SELECT * FROM workOrders
     `;
 
   db.query(getAll, (err, results) => {
     if (err) throw err;
     res.json({
       status: 200,
-      leads: results,
+      workOrders: results,
     });
   });
 });
 
-router.get('/leads/:id', (req, res) => {
+router.get('/workOrders/:id', (req, res) => {
   // Query
   const strQry =
       `
-SELECT entryType, leadName, leadEmail, leadNumber, leadNote, uID
-FROM leads
-WHERE lid = ?;
+SELECT entryType, woName, woEmail, woNumber, woNote, uID
+FROM workOrders
+WHERE woid = ?;
 `;
   db.query(strQry, [req.params.id], (err, results) => {
       if (err) throw err;
       res.json({
           status: 200,
-          results: (results.length <= 0) ? "Sorry, no lead was found." : results
+          results: (results.length <= 0) ? "Sorry, no wo was found." : results
       })
   })
 })
 // Delete product
-router.delete('/leads/:id', (req, res) => {
+router.delete('/workOrders/:id', (req, res) => {
   // Query
   const strQry =
       `
-DELETE FROM  leads 
-WHERE lid = ${req.params.id};
+DELETE FROM  workOrders 
+WHERE woid = ${req.params.id};
 `;
   db.query(strQry, (err, data, fields) => {
       if (err) throw err;
@@ -54,7 +54,7 @@ WHERE lid = ${req.params.id};
   })
 });
 
-router.post('/leads', bodyParser.json(),
+router.post('/workOrders', bodyParser.json(),
      (req, res) => {
          try {
 
@@ -62,12 +62,12 @@ router.post('/leads', bodyParser.json(),
              // Query
              const strQry =
                  `
-        INSERT INTO leads(entryType, leadName, leadEmail, leadNumber, leadNote, uID)
+        INSERT INTO workOrders(entryType, woName, woEmail, woNumber, woNote, uID)
         VALUES(?, ?, ?, ?, ?, ?);
         `;
              //
              db.query(strQry,
-                 [bd.entryType, bd.leadName, bd.leadEmail, bd.leadNumber, bd.leadNote, bd.uID],
+                 [bd.entryType, bd.woName, bd.woEmail, bd.woNumber, bd.woNote, bd.uID],
                  (err, results) => {
                      if (err) throw err
                      res.json({
@@ -75,14 +75,14 @@ router.post('/leads', bodyParser.json(),
                     });
                  })
          } catch (e) {
-             console.log(`Created new lead`);
+             console.log(`Created new wo`);
          }
      });
 
 // Get single buyer
 router.get("/:id", (req, res) => {
   try {
-    let sql = `SELECT * FROM buyers WHERE bid = ${req.params.bid}`; //Use backticks (`) whenever you want to use something that involves $(not money, the sign)
+    let sql = `SELECT * FROM workOrders WHERE woid = ${req.params.woid}`; //Use backticks (`) whenever you want to use something that involves $(not money, the sign)
     con.query(sql, (err, result) => {
       if (err) throw err;
       res.send(result);
@@ -93,15 +93,15 @@ router.get("/:id", (req, res) => {
   }
 });
 
-router.patch('/leads/:id', (req, res) => {
+router.patch('/workOrders/:id', (req, res) => {
   const bd = req.body;
   // Query
   const strQry =
-      `UPDATE leads
-SET entryType = ?, leadName = ?, leadEmail = ?, leadNumber = ?, leadNote = ?, uID = ?
-WHERE lid = ${req.params.id}`;
+      `UPDATE workOrders
+SET entryType = ?, woName = ?, woEmail = ?, woNumber = ?, woNote = ?, uID = ?
+WHERE woid = ${req.params.id}`;
 
-  db.query(strQry, [bd.entryType, bd.leadName, bd.leadEmail, bd.leadNumber, bd.leadNote, bd.uID], (err, data) => {
+  db.query(strQry, [bd.entryType, bd.woName, bd.woEmail, bd.woNumber, bd.woNote, bd.uID], (err, data) => {
       if (err) throw err;
       res.send(`number of affected record/s: ${data.affectedRows}`);
   })

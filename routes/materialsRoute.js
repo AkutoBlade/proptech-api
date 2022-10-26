@@ -26,9 +26,9 @@ router.get('/materials/:id', (req, res) => {
   // Query
   const strQry =
       `
-SELECT entryType, leadName, leadEmail, leadNumber, leadNote, uID
+SELECT matName, matDesc, MatDimensions, MatCat, sID,
 FROM materials
-WHERE lid = ?;
+WHERE mid = ?;
 `;
   db.query(strQry, [req.params.id], (err, results) => {
       if (err) throw err;
@@ -39,12 +39,12 @@ WHERE lid = ?;
   })
 })
 // Delete product
-router.delete('/leads/:id', (req, res) => {
+router.delete('/materials/:id', (req, res) => {
   // Query
   const strQry =
       `
 DELETE FROM  materials 
-WHERE lid = ${req.params.id};
+WHERE mid = ${req.params.id};
 `;
   db.query(strQry, (err, data, fields) => {
       if (err) throw err;
@@ -62,8 +62,8 @@ router.post('/materials', bodyParser.json(),
              // Query
              const strQry =
                  `
-        INSERT INTO materials(entryType, leadName, leadEmail, leadNumber, leadNote, uID)
-        VALUES(?, ?, ?, ?, ?, ?);
+        INSERT INTO materials(matName, matDesc, MatDimensions, MatCat, sID)
+        VALUES(?, ?, ?, ?, ?);
         `;
              //
              db.query(strQry,
@@ -82,7 +82,7 @@ router.post('/materials', bodyParser.json(),
 // Get single buyer
 router.get("materials/:id", (req, res) => {
   try {
-    let sql = `SELECT * FROM materials WHERE bid = ${req.params.bid}`; //Use backticks (`) whenever you want to use something that involves $(not money, the sign)
+    let sql = `SELECT * FROM materials WHERE mid = ${req.params.bid}`; //Use backticks (`) whenever you want to use something that involves $(not money, the sign)
     con.query(sql, (err, result) => {
       if (err) throw err;
       res.send(result);
@@ -98,8 +98,8 @@ router.patch('/materials/:id', (req, res) => {
   // Query
   const strQry =
       `UPDATE materials
-SET entryType = ?, leadName = ?, leadEmail = ?, leadNumber = ?, leadNote = ?, uID = ?
-WHERE lid = ${req.params.id}`;
+SET matName= ?, matDesc= ?, MatDimensions= ?, MatCat= ?, sID= ?
+WHERE mid = ${req.params.id}`;
 
   db.query(strQry, [bd.entryType, bd.leadName, bd.leadEmail, bd.leadNumber, bd.leadNote, bd.uID], (err, data) => {
       if (err) throw err;

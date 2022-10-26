@@ -8,43 +8,43 @@ const bodyParser = require('body-parser');
 // const nodemailer = require("nodemailer")//Allows us to run mySQL functions from javascript
 
 // Get all buyers
-router.get("/leads", (req, res) => {
+router.get("/quotes", (req, res) => {
   const getAll = `
-  SELECT * FROM leads
+  SELECT * FROM quotes
     `;
 
   db.query(getAll, (err, results) => {
     if (err) throw err;
     res.json({
       status: 200,
-      leads: results,
+      quotes: results,
     });
   });
 });
 
-router.get('/leads/:id', (req, res) => {
+router.get('/quotes/:id', (req, res) => {
   // Query
   const strQry =
       `
-SELECT entryType, leadName, leadEmail, leadNumber, leadNote, uID
-FROM leads
-WHERE lid = ?;
+SELECT entryType, quoteName, quoteEmail, quoteNumber, quoteNote, uID
+FROM quotes
+WHERE qteid = ?;
 `;
   db.query(strQry, [req.params.id], (err, results) => {
       if (err) throw err;
       res.json({
           status: 200,
-          results: (results.length <= 0) ? "Sorry, no lead was found." : results
+          results: (results.length <= 0) ? "Sorry, no quote was found." : results
       })
   })
 })
 // Delete product
-router.delete('/leads/:id', (req, res) => {
+router.delete('/quotes/:id', (req, res) => {
   // Query
   const strQry =
       `
-DELETE FROM  leads 
-WHERE lid = ${req.params.id};
+DELETE FROM  quotes 
+WHERE qteid = ${req.params.id};
 `;
   db.query(strQry, (err, data, fields) => {
       if (err) throw err;
@@ -54,7 +54,7 @@ WHERE lid = ${req.params.id};
   })
 });
 
-router.post('/leads', bodyParser.json(),
+router.post('/quotes', bodyParser.json(),
      (req, res) => {
          try {
 
@@ -62,12 +62,12 @@ router.post('/leads', bodyParser.json(),
              // Query
              const strQry =
                  `
-        INSERT INTO leads(entryType, leadName, leadEmail, leadNumber, leadNote, uID)
+        INSERT INTO quotes(entryType, quoteName, quoteEmail, quoteNumber, quoteNote, uID)
         VALUES(?, ?, ?, ?, ?, ?);
         `;
              //
              db.query(strQry,
-                 [bd.entryType, bd.leadName, bd.leadEmail, bd.leadNumber, bd.leadNote, bd.uID],
+                 [bd.entryType, bd.quoteName, bd.quoteEmail, bd.quoteNumber, bd.quoteNote, bd.uID],
                  (err, results) => {
                      if (err) throw err
                      res.json({
@@ -75,7 +75,7 @@ router.post('/leads', bodyParser.json(),
                     });
                  })
          } catch (e) {
-             console.log(`Created new lead`);
+             console.log(`Created new quote`);
          }
      });
 
@@ -93,15 +93,15 @@ router.get("/:id", (req, res) => {
   }
 });
 
-router.patch('/leads/:id', (req, res) => {
+router.patch('/quotes/:id', (req, res) => {
   const bd = req.body;
   // Query
   const strQry =
-      `UPDATE leads
-SET entryType = ?, leadName = ?, leadEmail = ?, leadNumber = ?, leadNote = ?, uID = ?
-WHERE lid = ${req.params.id}`;
+      `UPDATE quotes
+SET entryType = ?, quoteName = ?, quoteEmail = ?, quoteNumber = ?, quoteNote = ?, uID = ?
+WHERE qteid = ${req.params.id}`;
 
-  db.query(strQry, [bd.entryType, bd.leadName, bd.leadEmail, bd.leadNumber, bd.leadNote, bd.uID], (err, data) => {
+  db.query(strQry, [bd.entryType, bd.quoteName, bd.quoteEmail, bd.quoteNumber, bd.quoteNote, bd.uID], (err, data) => {
       if (err) throw err;
       res.send(`number of affected record/s: ${data.affectedRows}`);
   })

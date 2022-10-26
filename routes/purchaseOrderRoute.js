@@ -28,7 +28,7 @@ router.get('/PO/:id', (req, res) => {
       `
 SELECT entryType, leadName, leadEmail, leadNumber, leadNote, uID
 FROM leads
-WHERE lid = ?;
+WHERE poid = ?;
 `;
   db.query(strQry, [req.params.id], (err, results) => {
       if (err) throw err;
@@ -44,7 +44,7 @@ router.delete('/PO/:id', (req, res) => {
   const strQry =
       `
 DELETE FROM  leads 
-WHERE lid = ${req.params.id};
+WHERE poid = ${req.params.id};
 `;
   db.query(strQry, (err, data, fields) => {
       if (err) throw err;
@@ -99,7 +99,7 @@ router.patch('/PO/:id', (req, res) => {
   const strQry =
       `UPDATE leads
 SET entryType = ?, leadName = ?, leadEmail = ?, leadNumber = ?, leadNote = ?, uID = ?
-WHERE lid = ${req.params.id}`;
+WHERE poid = ${req.params.id}`;
 
   db.query(strQry, [bd.entryType, bd.leadName, bd.leadEmail, bd.leadNumber, bd.leadNote, bd.uID], (err, data) => {
       if (err) throw err;
