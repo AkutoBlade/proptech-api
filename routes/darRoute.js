@@ -77,3 +77,4 @@ router.post('/dar',bodyParser.json(),(req,res) => {
       }
     })
   });
+  module.exports = router;

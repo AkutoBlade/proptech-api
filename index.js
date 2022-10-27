@@ -32,7 +32,7 @@ app.use(
 );
 
 app.use(
-  router, usersRoute,  darRoute, leadsCRMroute, quotesRoute, purchaseOrderRoute, materialsRoute, workOrderRoute,
+  router, usersRoute, leadsCRMroute, quotesRoute, purchaseOrderRoute, materialsRoute, workOrderRoute, darRoute,
   express.json(),
   express.urlencoded({
     extended: true,
