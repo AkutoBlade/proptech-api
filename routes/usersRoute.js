@@ -139,14 +139,15 @@ router.post('/login',bodyParser.json(),(req,res) => {
  
   db.query(sql,email, async (err,results) => {
     if(err) throw err
-    if(results.length === 0){
+    if (!req.body.userEmail || !req.password) {
+      return res.status(400).json({
+        msg: "Username or Password not present",
+      })
+    }
+    else if(results.length === 0){
       res.json({
         msg: "Email does not exist"
       })
-      if (!req.body.userEmail || !req.body.userPassword) {
-         return res.status(400).json({
-           message: "Username or Password not present",
-         })
     }else{
       const isMatch = await bcrypt.compare(req.body.userPassword, results[0].userPassword);
       if(!isMatch){
