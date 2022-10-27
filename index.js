@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const app = express();
 
 const usersRoute = require("./routes/usersRoute");
+const darRoute = require("./routes/darRoute");
 const leadsCRMroute = require("./routes/leadsCRMroute");
 const quotesRoute = require("./routes/quotesRoute");
 const purchaseOrderRoute = require("./routes/purchaseOrderRoute");
@@ -31,7 +32,7 @@ app.use(
 );
 
 app.use(
-  router, usersRoute, leadsCRMroute, quotesRoute, purchaseOrderRoute, materialsRoute, workOrderRoute,
+  router, usersRoute,  darRoute, leadsCRMroute, quotesRoute, purchaseOrderRoute, materialsRoute, workOrderRoute,
   express.json(),
   express.urlencoded({
     extended: true,
