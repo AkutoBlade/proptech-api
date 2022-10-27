@@ -26,7 +26,7 @@ router.get('/quotes/:id', (req, res) => {
   // Query
   const strQry =
       `
-SELECT entryType, quoteName, quoteEmail, quoteNumber, quoteNote, uID
+SELECT entryType, uid, cusName, cusNo, cusAddress, damageType, insCat, leakDetectMethod, dmgLocation, dmgStatus, RepRecom, qtDesc, summary, jobCat, qtMaterials, scope, total, addNote
 FROM quotes
 WHERE qteid = ?;
 `;
@@ -62,12 +62,12 @@ router.post('/quotes', bodyParser.json(),
              // Query
              const strQry =
                  `
-        INSERT INTO quotes(entryType, quoteName, quoteEmail, quoteNumber, quoteNote, uID)
-        VALUES(?, ?, ?, ?, ?, ?);
+        INSERT INTO quotes(entryType, uid, cusName, cusNo, cusAddress, damageType, insCat, leakDetectMethod, dmgLocation, dmgStatus, RepRecom, qtDesc, summary, jobCat, qtMaterials, scope, total, addNote)
+        VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
         `;
              //
              db.query(strQry,
-                 [bd.entryType, bd.quoteName, bd.quoteEmail, bd.quoteNumber, bd.quoteNote, bd.uID],
+                 [bd.entryType, bd.uid, bd.cusName, bd.cusNo, bd.cusAddress, bd.damageType, bd.insCat, bd.leakDetectMethod, bd.dmgLocation, bd.dmgStatus, bd.RepRecom, bd.qtDesc, bd.summary, bd.jobCat, bd.qtMaterials, bd.scope, bd.total, bd.addNote],
                  (err, results) => {
                      if (err) throw err
                      res.json({
@@ -98,7 +98,7 @@ router.patch('/quotes/:id', (req, res) => {
   // Query
   const strQry =
       `UPDATE quotes
-SET entryType = ?, quoteName = ?, quoteEmail = ?, quoteNumber = ?, quoteNote = ?, uID = ?
+SET entryType = ?, uid = ?, cusName = ?, cusNo = ?, cusAddress = ?, damageType = ?, insCat = ?, leakDetectMethod = ?, dmgLocation = ?, dmgStatus = ?, RepRecom = ?, qtDesc = ?, summary = ?, jobCat = ?, qtMaterials = ?, scope = ?, total = ?, addNote = ?
 WHERE qteid = ${req.params.id}`;
 
   db.query(strQry, [bd.entryType, bd.quoteName, bd.quoteEmail, bd.quoteNumber, bd.quoteNote, bd.uID], (err, data) => {

@@ -8,9 +8,9 @@ const bodyParser = require('body-parser');
 // const nodemailer = require("nodemailer")//Allows us to run mySQL functions from javascript
 
 // Get all workOrders
-router.get("/workOrders", (req, res) => {
+router.get("/workorders", (req, res) => {
   const getAll = `
-  SELECT * FROM workOrders
+  SELECT * FROM workorders
     `;
 
   db.query(getAll, (err, results) => {
@@ -22,7 +22,7 @@ router.get("/workOrders", (req, res) => {
   });
 });
 
-router.get('/workOrders/:id', (req, res) => {
+router.get('/workorders/:id', (req, res) => {
   // Query
   const strQry =
       `
@@ -39,11 +39,11 @@ WHERE woid = ?;
   })
 })
 // Delete product
-router.delete('/workOrders/:id', (req, res) => {
+router.delete('/workorders/:id', (req, res) => {
   // Query
   const strQry =
       `
-DELETE FROM  workOrders 
+DELETE FROM  workorders 
 WHERE woid = ${req.params.id};
 `;
   db.query(strQry, (err, data, fields) => {
@@ -54,7 +54,7 @@ WHERE woid = ${req.params.id};
   })
 });
 
-router.post('/workOrders', bodyParser.json(),
+router.post('/workorders', bodyParser.json(),
      (req, res) => {
          try {
 
@@ -62,7 +62,7 @@ router.post('/workOrders', bodyParser.json(),
              // Query
              const strQry =
                  `
-        INSERT INTO workOrders(entryType, woName, woEmail, woNumber, woNote, uID)
+        INSERT INTO workorders(entryType, woName, woEmail, woNumber, woNote, uID)
         VALUES(?, ?, ?, ?, ?, ?);
         `;
              //
@@ -82,7 +82,7 @@ router.post('/workOrders', bodyParser.json(),
 // Get single buyer
 router.get("/:id", (req, res) => {
   try {
-    let sql = `SELECT * FROM workOrders WHERE woid = ${req.params.woid}`; //Use backticks (`) whenever you want to use something that involves $(not money, the sign)
+    let sql = `SELECT * FROM workorders WHERE woid = ${req.params.woid}`; //Use backticks (`) whenever you want to use something that involves $(not money, the sign)
     con.query(sql, (err, result) => {
       if (err) throw err;
       res.send(result);
@@ -93,11 +93,11 @@ router.get("/:id", (req, res) => {
   }
 });
 
-router.patch('/workOrders/:id', (req, res) => {
+router.patch('/workorders/:id', (req, res) => {
   const bd = req.body;
   // Query
   const strQry =
-      `UPDATE workOrders
+      `UPDATE worko rders
 SET entryType = ?, woName = ?, woEmail = ?, woNumber = ?, woNote = ?, uID = ?
 WHERE woid = ${req.params.id}`;
 
