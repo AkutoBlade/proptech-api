@@ -136,7 +136,12 @@ router.post('/register', bodyParser.json(),async (req, res) => {
 router.post('/login',bodyParser.json(),(req,res) => {
   let sql = `SELECT * FROM users WHERE userEmail = ?`
   let email =  req.body.userEmail
- 
+  if (email == ""){
+    res.json({
+      msg :"Values needed"
+    }
+    )
+  }else{
   db.query(sql,email, async (err,results) => {
     if(err) throw err
    if(results.length === 0){
@@ -174,7 +179,7 @@ router.post('/login',bodyParser.json(),(req,res) => {
       });
       }
     }
-  })
+  })}
 });
 
 //UPDATE
