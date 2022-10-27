@@ -136,12 +136,17 @@ router.post('/register', bodyParser.json(),async (req, res) => {
 router.post('/login',bodyParser.json(),(req,res) => {
   let sql = `SELECT * FROM users WHERE userEmail = ?`
   let email =  req.body.userEmail
+ 
   db.query(sql,email, async (err,results) => {
     if(err) throw err
     if(results.length === 0){
       res.json({
         msg: "Email does not exist"
       })
+      if (!req.body.userEmail || !req.body.userPassword) {
+         return res.status(400).json({
+           message: "Username or Password not present",
+         })
     }else{
       const isMatch = await bcrypt.compare(req.body.userPassword, results[0].userPassword);
       if(!isMatch){
