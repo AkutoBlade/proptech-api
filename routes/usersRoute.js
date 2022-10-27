@@ -139,7 +139,6 @@ router.post('/login',bodyParser.json(),(req,res) => {
  
   db.query(sql,email, async (err,results) => {
     if(err) throw err
-  localStorage.removeItem('users')
    if(results.length === 0){
       res.json({
         msg: "Email does not exist"
