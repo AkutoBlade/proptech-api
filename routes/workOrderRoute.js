@@ -26,7 +26,7 @@ router.get('/workorders/:id', (req, res) => {
   // Query
   const strQry =
       `
-SELECT entryType, woName, woEmail, woNumber, woNote, uID
+SELECT entryType, conID, wokers, jobCat, mat, qteID, poID,jobDesc, uID, workStatus, workerNote, workerTimeKeeping,
 FROM workOrders
 WHERE woid = ?;
 `;
@@ -43,7 +43,7 @@ router.delete('/workorders/:id', (req, res) => {
   // Query
   const strQry =
       `
-DELETE FROM  workorders 
+DELETE FROM  workOrders 
 WHERE woid = ${req.params.id};
 `;
   db.query(strQry, (err, data, fields) => {
@@ -62,7 +62,7 @@ router.post('/workorders', bodyParser.json(),
              // Query
              const strQry =
                  `
-        INSERT INTO workorders(entryType, woName, woEmail, woNumber, woNote, uID)
+        INSERT INTO workOrders(entryType, woName, woEmail, woNumber, woNote, uID)
         VALUES(?, ?, ?, ?, ?, ?);
         `;
              //
@@ -82,7 +82,7 @@ router.post('/workorders', bodyParser.json(),
 // Get single buyer
 router.get("/:id", (req, res) => {
   try {
-    let sql = `SELECT * FROM workorders WHERE woid = ${req.params.woid}`; //Use backticks (`) whenever you want to use something that involves $(not money, the sign)
+    let sql = `SELECT * FROM workOrders WHERE woid = ${req.params.woid}`; //Use backticks (`) whenever you want to use something that involves $(not money, the sign)
     con.query(sql, (err, result) => {
       if (err) throw err;
       res.send(result);
@@ -97,7 +97,7 @@ router.patch('/workorders/:id', (req, res) => {
   const bd = req.body;
   // Query
   const strQry =
-      `UPDATE worko rders
+      `UPDATE workOrders
 SET entryType = ?, woName = ?, woEmail = ?, woNumber = ?, woNote = ?, uID = ?
 WHERE woid = ${req.params.id}`;
 

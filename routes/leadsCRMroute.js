@@ -27,7 +27,7 @@ router.get('/leads/:id', (req, res) => {
   // Query
   const strQry =
       `
-SELECT entryType, leadName, leadEmail, leadNumber, leadNote, uID
+SELECT *
 FROM leads
 WHERE lid = ?;
 `;
