@@ -102,18 +102,18 @@ router.post('/leads', bodyParser.json(),
      });
 
 // Get single buyer
-router.get("leads/:id", (req, res) => {
-  try {
-    let sql = `SELECT * FROM buyers WHERE lid = ${req.params.lid}`; //Use backticks (`) whenever you want to use something that involves $(not money, the sign)
-    con.query(sql, (err, result) => {
-      if (err) throw err;
-      res.send(result);
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
-  }
-});
+// router.get("leads/:id", (req, res) => {
+//   try {
+//     let sql = `SELECT * FROM buyers WHERE lid = ${req.params.lid}`; //Use backticks (`) whenever you want to use something that involves $(not money, the sign)
+//     con.query(sql, (err, result) => {
+//       if (err) throw err;
+//       res.send(result);
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(400).send(error);
+//   }
+// });
 
 router.patch('/leads/:id', (req, res) => {
   const bd = req.body;

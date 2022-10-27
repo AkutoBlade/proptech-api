@@ -12,7 +12,7 @@ router.get("/dar", (req, res) => {
       if (err) throw err;
       res.json({
         status: 200,
-        leads: results,
+        dar: results,
       });
     });
   });
@@ -21,7 +21,7 @@ router.get("/dar", (req, res) => {
     // Query
     const strQry =
         `
-  SELECT clientName, date, reportNumber, damageType, facility, damageSeverity, inspectionCategory, leakDetectionMethod, damageLocationInternal, damageLocationExternal, damageStatusConcealed, damageStatusNotConcealed, repairActionRecommendation, executiveSummary, authBy
+  SELECT *
   FROM dar
   WHERE claimNumber = ?;
   `;
@@ -34,47 +34,50 @@ router.get("/dar", (req, res) => {
     })
   });
 
-router.post('/dar',bodyParser.json(),(req,res) => {
-    const bd = req.body;
-    let sql = `    INSERT INTO dar(claimNumber, date, reportNumber, damageType, facility, damageSeverity uID)
-    VALUES(?, ?, ?, ?, ?, ?);`
-    db.query(sql,email, async (err,results) => {
-      if(err) throw err
-      if(results.length === 0){
-        res.json({
-          msg: "Email does not exist"
-        })
-      }else{
-        const isMatch = await bcrypt.compare(req.body.userPassword, results[0].userPassword);
-        if(!isMatch){
-          res.json({
-            msg: "Incorrect Password"
-          })
-        }else{
-          const payload = {
-            user: {
-                userName: results[0].userName,
-                userEmail: results[0].userEmail,
-                userNo: results[0].userNo,
-                userPassword: results[0].userPassword,
-                userAddress: results[0].userAddress,
-                userStatus: results[0].userStatus,
-                createdDate: results[0].createdDate,
-                updateDate: results[0].updateDate
-            },
-        };
-        jwt.sign(payload, process.env.SECRET_KEY, {
-            expiresIn: "365d"
-        }, (err, token) => {
-            if (err) throw err;
-            res.json({
-              msg: results,
-              token: token
+
+  
+router.post('/dar', bodyParser.json(),
+(req, res) => {
+    try {
+
+        const bd = req.body;
+        // Query
+        const strQry =
+            `
+   INSERT INTO dar(clientName, date, reportNumber, damageType, facility, damageSeverity, inspectionCategory, leakDetectionMethod, damageLocationInternal, damageLocationExternal, damageStatusConcealed, damageStatusNotConcealed, repairActionRecommendation, executiveSummary, authBy)
+   VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+   `;
+        //
+        db.query(strQry,
+            [bd.clientName, bd.date, bd.reportNumber, bd.damageType, bd.facility, bd.damageSeverity, bd.inspectionCategory, bd.leakDetectionMethod, bd.damageLocationInternal, bd.damageLocationExternal, bd.damageStatusConcealed, bd.damageStatusNotConcealed, bd.repairActionRecommendation, bd.executiveSummary, bd.authBy],
+            (err, results) => {
+                if (err) throw err
+                res.json({
+                   msg:`Added Item`
+               });
             })
-            // res.status(200).send("Logged in");
-        });
-        }
-      }
+    } catch (e) {
+        console.log(`Created New Damage Assessment Report`);
+    }
+});
+
+
+
+router.patch('/dar/:id', (req, res) => {
+    const bd = req.body;
+    // Query
+    const strQry =
+        `UPDATE dar
+  SET entryType = ?, leadName = ?, leadEmail = ?, leadNumber = ?, leadNote = ?, uID = ?, UpdatedBy = ?
+  WHERE lid = ${req.params.id}`;
+  
+  bd.UpdatedBy= `${new Date().toISOString().slice(0, 10)}`;
+  
+    db.query(strQry, [bd.entryType, bd.leadName, bd.leadEmail, bd.leadNumber, bd.leadNote, bd.uID, bd.UpdatedBy], (err, data) => {
+        if (err) throw err;
+        res.json({
+          msg:`Edited`
+      });
     })
   });
   module.exports = router;
