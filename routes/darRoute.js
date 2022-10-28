@@ -60,7 +60,7 @@ router.post('/dar', bodyParser.json(), (req, res) => {
     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `
 
-    db.query(add, [req.body.claimNumber, req.body.clientName, req.body.date, req.body.reportNumber, req.body.damageType, req.body.facility, req.body.damageSeverity, req.body.inspectionCategory, req.body.leakDetectionMethod, req.body.damageLocationInternal, req.body.damageLocationExternal, req.body.damageStatusConcealed, req.body.damageStatusNotConcealed, req.body.repairActionRecommendation, req.body.executiveSummary, req.body.authBy, ], (err, results) => {
+    db.query(add, [req.body.claimNumber, req.body.clientName, req.body.date, req.body.reportNumber, req.body.damageType, req.body.facility, req.body.damageSeverity, req.body.inspectionCategory, req.body.leakDetectionMethod, req.body.damageLocationInternal, req.body.damageLocationExternal, req.body.damageStatusConcealed, req.body.damageStatusNotConcealed, req.body.repairActionRecommendation, req.body.executiveSummary, req.body.authBy], (err, results) => {
         if (err) throw err
         res.json({
             status: 204,
@@ -69,6 +69,20 @@ router.post('/dar', bodyParser.json(), (req, res) => {
     })
 })
 
-
+router.patch('/dar/:id', (req, res) => {
+    const bd = req.body;
+    // Query
+    const strQry =
+        `UPDATE dar
+  SET claimNumber = ?, clientName = ?, date = ?, reportNumber = ?, damageType = ?, facility = ?, damageSeverity = ?, inspectionCategory = ?, leakDetectionMethod = ?, damageLocationInternal = ?, damageLocationExternal = ?, damageStatusConcealed = ?, damageStatusNotConcealed = ?, repairActionRecommendation = ?, executiveSummary = ?, authBy = ?
+  WHERE claimNumber = ${req.params.id}`;
+    
+    db.query(strQry, [bd.claimNumber, bd.clientName, bd.date, bd.reportNumber, bd.damageType, bd.facility, bd.damageSeverity, bd.inspectionCategory, bd.leakDetectionMethod, bd.damageLocationInternal, bd.damageLocationExternal, bd.damageStatusConcealed, bd.damageStatusNotConcealed, bd.repairActionRecommendation, bd.executiveSummary, bd.authBy], (err, data) => {
+        if (err) throw err;
+        res.json({
+          msg:`Edited`
+      });
+    })
+  });
 
      module.exports = router;
