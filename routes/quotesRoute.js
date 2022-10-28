@@ -1,7 +1,7 @@
 const db = require("../config/dbconnection");
 const express = require("express");
 const router = express.Router();
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 // const bodyParser = require("body-parser");
 // const bcrypt = require("bcrypt");
 // const jwt = require("jsonwebtoken");
@@ -22,62 +22,78 @@ router.get("/quotes", (req, res) => {
   });
 });
 
-router.get('/quotes/:id', (req, res) => {
+router.get("/quotes/:id", (req, res) => {
   // Query
-  const strQry =
-      `
+  const strQry = `
 SELECT entryType, uid, cusName, cusNo, cusAddress, damageType, insCat, leakDetectMethod, dmgLocation, dmgStatus, RepRecom, qtDesc, summary, jobCat, qteMaterials, scope, total, addNote
 FROM quotes
 WHERE qteid = ?;
 `;
   db.query(strQry, [req.params.id], (err, results) => {
-      if (err) throw err;
-      res.json({
-          status: 200,
-          results: (results.length <= 0) ? "Sorry, no quote was found." : results
-      })
-  })
-})
+    if (err) throw err;
+    res.json({
+      status: 200,
+      results: results.length <= 0 ? "Sorry, no quote was found." : results,
+    });
+  });
+});
 // Delete product
-router.delete('/quotes/:id', (req, res) => {
+router.delete("/quotes/:id", (req, res) => {
   // Query
-  const strQry =
-      `
+  const strQry = `
 DELETE FROM  quotes 
 WHERE qteid = ${req.params.id};
 `;
   db.query(strQry, (err, data, fields) => {
-      if (err) throw err;
-      res.json({
-          msg: `Deleted`
-      });
-  })
+    if (err) throw err;
+    res.json({
+      msg: `Deleted`,
+    });
+  });
 });
 
-router.post('/quotes', bodyParser.json(),
-     (req, res) => {
-         try {
-
-             const bd = req.body;
-             // Query
-             const strQry =
-                 `
+router.post("/quotes", bodyParser.json(), (req, res) => {
+  try {
+    const bd = req.body;
+    // Query
+    const strQry = `
         INSERT INTO quotes(entryType, uid, cusName, cusNo, cusAddress, damageType, insCat, leakDetectMethod, dmgLocation, dmgStatus, RepRecom, qtDesc, summary, jobCat, qteMaterials, scope, total, addNote)
         VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
         `;
-             //
-             db.query(strQry,
-                 [bd.entryType, bd.uid, bd.cusName, bd.cusNo, bd.cusAddress, bd.damageType, bd.insCat, bd.leakDetectMethod, bd.dmgLocation, bd.dmgStatus, bd.RepRecom, bd.qtDesc, bd.summary, bd.jobCat, bd.qteMaterials, bd.scope, bd.total, bd.addNote],
-                 (err, results) => {
-                     if (err) throw err
-                     res.json({
-                        msg:`Added Item`
-                    });
-                 })
-         } catch (e) {
-             console.log(`Created new quote`);
-         }
-     });
+    //
+    db.query(
+      strQry,
+      [
+        bd.entryType,
+        bd.uid,
+        bd.cusName,
+        bd.cusNo,
+        bd.cusAddress,
+        bd.damageType,
+        bd.insCat,
+        bd.leakDetectMethod,
+        bd.dmgLocation,
+        bd.dmgStatus,
+        bd.RepRecom,
+        bd.qtDesc,
+        bd.summary,
+        bd.jobCat,
+        bd.qteMaterials,
+        bd.scope,
+        bd.total,
+        bd.addNote,
+      ],
+      (err, results) => {
+        if (err) throw err;
+        res.json({
+          msg: `Added Item`,
+        });
+      }
+    );
+  } catch (e) {
+    console.log(`Created new quote`);
+  }
+});
 
 // Get single buyer
 // router.get("/:id", (req, res) => {
@@ -93,20 +109,29 @@ router.post('/quotes', bodyParser.json(),
 //   }
 // });
 
-router.patch('/quotes/:id', (req, res) => {
+router.patch("/quotes/:id", (req, res) => {
   const bd = req.body;
   // Query
-  const strQry =
-      `UPDATE quotes
+  const strQry = `UPDATE quotes
 SET entryType = ?, uid = ?, cusName = ?, cusNo = ?, cusAddress = ?, damageType = ?, insCat = ?, leakDetectMethod = ?, dmgLocation = ?, dmgStatus = ?, RepRecom = ?, qtDesc = ?, summary = ?, jobCat = ?, qteMaterials = ?, scope = ?, total = ?, addNote = ?
 WHERE qteid = ${req.params.id}`;
 
-  db.query(strQry, [bd.entryType, bd.quoteName, bd.quoteEmail, bd.quoteNumber, bd.quoteNote, bd.uID], (err, data) => {
+  db.query(
+    strQry,
+    [
+      bd.entryType,
+      bd.quoteName,
+      bd.quoteEmail,
+      bd.quoteNumber,
+      bd.quoteNote,
+      bd.uID,
+    ],
+    (err, data) => {
       if (err) throw err;
       res.send(`number of affected record/s: ${data.affectedRows}`);
-  })
+    }
+  );
 });
-
 
 module.exports = router;
 // Delete a user
