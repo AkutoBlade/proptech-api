@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 // const nodemailer = require("nodemailer")//Allows us to run mySQL functions from javascript
 
 // Get all workOrders
-router.get("/workorders", (req, res) => {
+router.get("/wo", (req, res) => {
   const getAll = `
   SELECT * FROM workorders
     `;
@@ -22,11 +22,11 @@ router.get("/workorders", (req, res) => {
   });
 });
 
-router.get('/workorders/:id', (req, res) => {
+router.get('/wo/:id', (req, res) => {
   // Query
   const strQry =
       `
-SELECT entryType, conID, wokers, jobCat, mat, qteID, poID,jobDesc, uID, workStatus, workerNote, workerTimeKeeping,
+SELECT  *
 FROM workOrders
 WHERE woid = ?;
 `;
@@ -39,7 +39,7 @@ WHERE woid = ?;
   })
 })
 // Delete product
-router.delete('/workorders/:id', (req, res) => {
+router.delete('/wo/:id', (req, res) => {
   // Query
   const strQry =
       `
@@ -54,7 +54,7 @@ WHERE woid = ${req.params.id};
   })
 });
 
-router.post('/workorders', bodyParser.json(),
+router.post('/wo', bodyParser.json(),
      (req, res) => {
          try {
 
@@ -62,12 +62,12 @@ router.post('/workorders', bodyParser.json(),
              // Query
              const strQry =
                  `
-        INSERT INTO workOrders(entryType, woName, woEmail, woNumber, woNote, uID)
-        VALUES(?, ?, ?, ?, ?, ?);
+        INSERT INTO workOrders(conID, workers, entryType, jobCat, mat, qteID, poID, jobDesc, uID, workerStatus, workerNote, workerTimeKeeping)
+        VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
         `;
              //
              db.query(strQry,
-                 [bd.entryType, bd.woName, bd.woEmail, bd.woNumber, bd.woNote, bd.uID],
+                 [bd.conID, bd.workers, bd.entryType, bd.jobCat, bd.mat, bd.qteID, bd.poID, bd.jobDesc, bd.uID, bd.workerStatus, bd.workerNote, bd.workerTimeKeeping],
                  (err, results) => {
                      if (err) throw err
                      res.json({
@@ -93,7 +93,7 @@ router.post('/workorders', bodyParser.json(),
 //   }
 // });
 
-router.patch('/workorders/:id', (req, res) => {
+router.patch('/wo/:id', (req, res) => {
   const bd = req.body;
   // Query
   const strQry =
