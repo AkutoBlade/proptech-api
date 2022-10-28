@@ -3,36 +3,35 @@ const express = require("express");
 const router = express.Router();
 const bodyParser = require('body-parser');
 
-router.get("/dar", (req, res) => {
-    const getAll = `
-    SELECT * FROM dar
-      `;
-  
-    db.query(getAll, (err, results) => {
-      if (err) throw err;
-      res.json({
-        status: 200,
-        dar: results,
-      });
-    });
-  });
-  
-  router.get('/dar/:id', (req, res) => {
-    // Query
-    const strQry =
-        `
-  SELECT *
-  FROM dar
-  WHERE claimNumber = ?;
+// All DARS
+router.get('/dar', (req, res) => {
+  const getAll = `
+      SELECT * FROM dar
   `;
-    db.query(strQry, [req.params.id], (err, results) => {
-        if (err) throw err;
-        res.json({
-            status: 200,
-            results: (results.length <= 0) ? "Sorry, no DAR with that Claim Number." : results
-        })
-    })
+
+  db.query(getAll, (err, results) => {
+      if (err) throw err
+      res.json({
+          status: 200,
+          dar: results
+      });
   });
+});
+
+// SINGLE DAR
+router.get('/dar/:id', (req, res) => {
+  const getSingle = `
+      SELECT * FROM dar WHERE claimNumber = ${req.params.id}
+  `
+
+  db.query(getSingle, (err, results) => {
+      if (err) throw err
+      res.json({
+          status: 200,
+          dar: results
+      })
+  })
+});
 
 
   
