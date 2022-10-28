@@ -26,7 +26,7 @@ router.get('/quotes/:id', (req, res) => {
   // Query
   const strQry =
       `
-SELECT entryType, uid, cusName, cusNo, cusAddress, damageType, insCat, leakDetectMethod, dmgLocation, dmgStatus, RepRecom, qtDesc, summary, jobCat, qtMaterials, scope, total, addNote
+SELECT entryType, uid, cusName, cusNo, cusAddress, damageType, insCat, leakDetectMethod, dmgLocation, dmgStatus, RepRecom, qtDesc, summary, jobCat, qteMaterials, scope, total, addNote
 FROM quotes
 WHERE qteid = ?;
 `;
