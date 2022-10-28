@@ -39,6 +39,7 @@ WHERE lid = ?;
       })
   })
 })
+
 // Delete product
 router.delete('/leads/:id', (req, res) => {
   // Query
