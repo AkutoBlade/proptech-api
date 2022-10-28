@@ -138,7 +138,7 @@ router.post('/login',bodyParser.json(),(req,res) => {
   let email =  req.body.userEmail
   db.query(sql,email, async (err,results) => {
     if(err) throw err
-   if(results.length === 0 || req.body ==""){
+   if(results.length === null ){
       res.json({
         msg: "Email does not exist"
       })
