@@ -1,7 +1,7 @@
 const db = require("../config/dbconnection");
 const express = require("express");
 const router = express.Router();
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 // const bodyParser = require("body-parser");
 // const bcrypt = require("bcrypt");
 // const jwt = require("jsonwebtoken");
@@ -22,62 +22,59 @@ router.get("/materials", (req, res) => {
   });
 });
 
-router.get('/materials/:id', (req, res) => {
+router.get("/materials/:id", (req, res) => {
   // Query
-  const strQry =
-      `
-SELECT matName, matDesc, MatDimensions, MatCat, sID,
+  const strQry = `
+SELECT *
 FROM materials
 WHERE mid = ?;
 `;
   db.query(strQry, [req.params.id], (err, results) => {
-      if (err) throw err;
-      res.json({
-          status: 200,
-          results: (results.length <= 0) ? "Sorry, no lead was found." : results
-      })
-  })
-})
+    if (err) throw err;
+    res.json({
+      status: 200,
+      results: results.length <= 0 ? "Sorry, no lead was found." : results,
+    });
+  });
+});
 // Delete product
-router.delete('/materials/:id', (req, res) => {
+router.delete("/materials/:id", (req, res) => {
   // Query
-  const strQry =
-      `
+  const strQry = `
 DELETE FROM  materials 
 WHERE mid = ${req.params.id};
 `;
   db.query(strQry, (err, data, fields) => {
-      if (err) throw err;
-      res.json({
-          msg: `Deleted`
-      });
-  })
+    if (err) throw err;
+    res.json({
+      msg: `Deleted`,
+    });
+  });
 });
 
-router.post('/materials', bodyParser.json(),
-     (req, res) => {
-         try {
-
-             const bd = req.body;
-             // Query
-             const strQry =
-                 `
+router.post("/materials", bodyParser.json(), (req, res) => {
+  try {
+    const bd = req.body;
+    // Query
+    const strQry = `
         INSERT INTO materials(matName, matDesc, MatDimensions, MatCat, sID)
         VALUES(?, ?, ?, ?, ?);
         `;
-             //
-             db.query(strQry,
-                 [bd.entryType, bd.leadName, bd.leadEmail, bd.leadNumber, bd.leadNote, bd.uID],
-                 (err, results) => {
-                     if (err) throw err
-                     res.json({
-                        msg:`Added Item`
-                    });
-                 })
-         } catch (e) {
-             console.log(`Created new lead`);
-         }
-     });
+    //
+    db.query(
+      strQry,
+      [bd.matName, bd.matDesc, bd.MatDimensions, bd.MatCat, bd.sID],
+      (err, results) => {
+        if (err) throw err;
+        res.json({
+          msg: `Added Item`,
+        });
+      }
+    );
+  } catch (e) {
+    console.log(`Created new lead`);
+  }
+});
 
 // Get single buyer
 // router.get("materials/:id", (req, res) => {
@@ -93,20 +90,29 @@ router.post('/materials', bodyParser.json(),
 //   }
 // });
 
-router.patch('/materials/:id', (req, res) => {
+router.patch("/materials/:id", (req, res) => {
   const bd = req.body;
   // Query
-  const strQry =
-      `UPDATE materials
+  const strQry = `UPDATE materials
 SET matName= ?, matDesc= ?, MatDimensions= ?, MatCat= ?, sID= ?
 WHERE mid = ${req.params.id}`;
 
-  db.query(strQry, [bd.entryType, bd.leadName, bd.leadEmail, bd.leadNumber, bd.leadNote, bd.uID], (err, data) => {
+  db.query(
+    strQry,
+    [
+      bd.entryType,
+      bd.leadName,
+      bd.leadEmail,
+      bd.leadNumber,
+      bd.leadNote,
+      bd.uID,
+    ],
+    (err, data) => {
       if (err) throw err;
       res.send(`number of affected record/s: ${data.affectedRows}`);
-  })
+    }
+  );
 });
-
 
 module.exports = router;
 // Delete a user
