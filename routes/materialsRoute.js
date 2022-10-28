@@ -27,9 +27,9 @@ router.get("/materials/:id", (req, res) => {
   const strQry = `
 SELECT matName, matDesc, MatDimensions, MatCat, sID,
 FROM materials
-WHERE mid = ?;
+WHERE mid = ${req.params.id};
 `;
-  db.query(strQry, [req.params.id], (err, results) => {
+  db.query(strQry, (err, results) => {
     if (err) throw err;
     res.json({
       status: 200,

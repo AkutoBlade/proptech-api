@@ -27,9 +27,9 @@ router.get("/quotes/:id", (req, res) => {
   const strQry = `
 SELECT entryType, uid, cusName, cusNo, cusAddress, damageType, insCat, leakDetectMethod, dmgLocation, dmgStatus, RepRecom, qtDesc, summary, jobCat, qteMaterials, scope, total, addNote
 FROM quotes
-WHERE qteid = ?;
+WHERE qteid = ${req.params.id};
 `;
-  db.query(strQry, [req.params.id], (err, results) => {
+  db.query(strQry, (err, results) => {
     if (err) throw err;
     res.json({
       status: 200,
