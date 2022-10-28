@@ -80,18 +80,18 @@ router.post('/materials', bodyParser.json(),
      });
 
 // Get single buyer
-router.get("materials/:id", (req, res) => {
-  try {
-    let sql = `SELECT * FROM materials WHERE mid = ${req.params.bid}`; //Use backticks (`) whenever you want to use something that involves $(not money, the sign)
-    con.query(sql, (err, result) => {
-      if (err) throw err;
-      res.send(result);
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
-  }
-});
+// router.get("materials/:id", (req, res) => {
+//   try {
+//     let sql = `SELECT * FROM materials WHERE mid = ${req.params.bid}`; //Use backticks (`) whenever you want to use something that involves $(not money, the sign)
+//     con.query(sql, (err, result) => {
+//       if (err) throw err;
+//       res.send(result);
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(400).send(error);
+//   }
+// });
 
 router.patch('/materials/:id', (req, res) => {
   const bd = req.body;

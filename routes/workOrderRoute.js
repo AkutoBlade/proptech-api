@@ -80,18 +80,18 @@ router.post('/workorders', bodyParser.json(),
      });
 
 // Get single buyer
-router.get("/:id", (req, res) => {
-  try {
-    let sql = `SELECT * FROM workOrders WHERE woid = ${req.params.woid}`; //Use backticks (`) whenever you want to use something that involves $(not money, the sign)
-    con.query(sql, (err, result) => {
-      if (err) throw err;
-      res.send(result);
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
-  }
-});
+// router.get("/:id", (req, res) => {
+//   try {
+//     let sql = `SELECT * FROM workOrders WHERE woid = ${req.params.woid}`; //Use backticks (`) whenever you want to use something that involves $(not money, the sign)
+//     con.query(sql, (err, result) => {
+//       if (err) throw err;
+//       res.send(result);
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(400).send(error);
+//   }
+// });
 
 router.patch('/workorders/:id', (req, res) => {
   const bd = req.body;

@@ -86,18 +86,18 @@ router.post('/inventory', bodyParser.json(),
      });
 
 // Get single buyer
-router.get("inventory/:id", (req, res) => {
-  try {
-    let sql = `SELECT * FROM inventory WHERE bid = ${req.params.bid}`; //Use backticks (`) whenever you want to use something that involves $(not money, the sign)
-    con.query(sql, (err, result) => {
-      if (err) throw err;
-      res.send(result);
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
-  }
-});
+// router.get("inventory/:id", (req, res) => {
+//   try {
+//     let sql = `SELECT * FROM inventory WHERE bid = ${req.params.bid}`; //Use backticks (`) whenever you want to use something that involves $(not money, the sign)
+//     con.query(sql, (err, result) => {
+//       if (err) throw err;
+//       res.send(result);
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(400).send(error);
+//   }
+// });
 
 router.patch('/inventory/:id', (req, res) => {
   const bd = req.body;
