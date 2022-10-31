@@ -8,9 +8,9 @@ const bodyParser = require('body-parser');
 // const nodemailer = require("nodemailer")//Allows us to run mySQL functions from javascript
 
 // Get all workOrders
-router.get("/wo", (req, res) => {
+router.get("/wos", (req, res) => {
   const getAll = `
-  SELECT * FROM workorders
+  SELECT * FROM workOrders
     `;
 
   db.query(getAll, (err, results) => {
@@ -22,7 +22,7 @@ router.get("/wo", (req, res) => {
   });
 });
 
-router.get('/wo/:id', (req, res) => {
+router.get('/wos/:id', (req, res) => {
   // Query
   const strQry =
       `
@@ -39,7 +39,7 @@ WHERE woid = ?;
   })
 })
 // Delete product
-router.delete('/wo/:id', (req, res) => {
+router.delete('/wos/:id', (req, res) => {
   // Query
   const strQry =
       `
@@ -54,7 +54,7 @@ WHERE woid = ${req.params.id};
   })
 });
 
-router.post('/wo', bodyParser.json(),
+router.post('/wos', bodyParser.json(),
      (req, res) => {
          try {
 
@@ -79,29 +79,15 @@ router.post('/wo', bodyParser.json(),
          }
      });
 
-// Get single buyer
-// router.get("/:id", (req, res) => {
-//   try {
-//     let sql = `SELECT * FROM workOrders WHERE woid = ${req.params.woid}`; //Use backticks (`) whenever you want to use something that involves $(not money, the sign)
-//     con.query(sql, (err, result) => {
-//       if (err) throw err;
-//       res.send(result);
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(400).send(error);
-//   }
-// });
-
-router.patch('/wo/:id', (req, res) => {
+router.patch('/wos/:id', (req, res) => {
   const bd = req.body;
   // Query
   const strQry =
       `UPDATE workOrders
-SET entryType = ?, woName = ?, woEmail = ?, woNumber = ?, woNote = ?, uID = ?
+SET conID = ?, workers = ?, entryType = ?, jobCat = ?, mat = ?, qteID = ?, poID = ?, jobDesc = ?, uID = ?, workerStatus = ?, workerNote = ?, workerTimeKeeping = ?
 WHERE woid = ${req.params.id}`;
 
-  db.query(strQry, [bd.entryType, bd.woName, bd.woEmail, bd.woNumber, bd.woNote, bd.uID], (err, data) => {
+  db.query(strQry, [bd.conID, bd.workers, bd.entryType, bd.jobCat, bd.mat, bd.qteID, bd.poID, bd.jobDesc,bd.uID, bd.workerStatus, bd.workerNote, bd.workerTimeKeeping], (err, data) => {
       if (err) throw err;
       res.send(`number of affected record/s: ${data.affectedRows}`);
   })
