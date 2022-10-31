@@ -118,7 +118,7 @@ router.post("/leads", bodyParser.json(), async (req, res) => {
 //   }
 // });
 
-router.patch("/leads/", (req, res) => {
+router.patch("/leads/:id", (req, res) => {
   const bd = req.body;
   // Query
   const strQry = `UPDATE leads
