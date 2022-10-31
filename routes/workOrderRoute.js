@@ -89,7 +89,9 @@ WHERE woid = ${req.params.id}`;
 
   db.query(strQry, [bd.conID, bd.workers, bd.entryType, bd.jobCat, bd.mat, bd.qteID, bd.poID, bd.jobDesc,bd.uID, bd.workStatus, bd.workerNote, bd.workerTimeKeeping], (err, data) => {
       if (err) throw err;
-      res.send(`number of affected record/s: ${data.affectedRows}`);
+      res.json({
+        msg:`it is updated`
+      });
   })
 });
 
