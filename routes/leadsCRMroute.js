@@ -130,7 +130,7 @@ WHERE lid = ${req.body.id}`;
   db.query(
     strQry, //Eqiuvalent to sql in my code
     [
-      bd.lid,
+      lid,
       bd.entryType,
       bd.leadName,
       bd.leadEmail,
