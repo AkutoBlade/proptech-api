@@ -118,34 +118,67 @@ router.post("/leads", bodyParser.json(), async (req, res) => {
 //   }
 // });
 
-router.patch("/leads/:id", (req, res) => {
-  const bd = req.body;
+router.patch("/leads/", (req, res) => {
+  // const bd = req.body;
   // Query
-  const strQry = `UPDATE leads
-SET lid = ?, entryType = ?, leadName = ?, leadEmail = ?, leadNumber = ?, leadNote = ?, uID = ?, UpdatedBy = ?
-WHERE lid = ${req.body.lid}`;
+  //   const strQry = `UPDATE leads
+  // SET lid = ?, entryType = ?, leadName = ?, leadEmail = ?, leadNumber = ?, leadNote = ?, uID = ?, UpdatedBy = ?
+  // WHERE lid = ${req.body.lid}`;
 
-  bd.UpdatedBy = `${new Date().toISOString().slice(0, 10)}`;
+  //   bd.UpdatedBy = `${new Date().toISOString().slice(0, 10)}`;
 
-  db.query(
-    strQry, //Eqiuvalent to sql in my code
-    [
-      bd.lid,
-      bd.entryType,
-      bd.leadName,
-      bd.leadEmail,
-      bd.leadNumber,
-      bd.leadNote,
-      bd.uID,
-      bd.UpdatedBy,
-    ], //The array would be equivalent to my object
-    (err, data) => {
+  //   db.query(
+  //     strQry, //Eqiuvalent to sql in my code
+  //     [
+  //       bd.lid,
+  //       bd.entryType,
+  //       bd.leadName,
+  //       bd.leadEmail,
+  //       bd.leadNumber,
+  //       bd.leadNote,
+  //       bd.uID,
+  //       bd.UpdatedBy,
+  //     ], //The array would be equivalent to my object
+  //     (err, data) => {
+  //       if (err) throw err;
+  //       res.json({
+  //         msg: `Edited`,
+  //       });
+  //     }
+  //   );
+  try {
+    let sql = `UPDATE leads SET ? WHERE lid= ${req.body.lid}`;
+    UpdatedBy = `${new Date().toISOString().slice(0, 10)}`;
+    const {
+      lid,
+      entryType,
+      leadName,
+      leadEmail,
+      leadNumber,
+      leadNote,
+      uID,
+      UpdatedBy,
+    } = req.body;
+
+    let leads = {
+      lid,
+      entryType,
+      leadName,
+      leadEmail,
+      leadNumber,
+      leadNote,
+      uID,
+      UpdatedBy,
+    };
+
+    db.query(sql, leads, (err) => {
       if (err) throw err;
-      res.json({
-        msg: `Edited`,
-      });
-    }
-  );
+      res.send(leads);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
 });
 
 module.exports = router;
