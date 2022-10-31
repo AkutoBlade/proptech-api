@@ -76,7 +76,7 @@ router.post('/wos', bodyParser.json(),
                  })
          } catch (e) {
              console.log(`Created new wo`);
-         }
+         } 
      });
 
 router.patch('/wos/:id', (req, res) => {
