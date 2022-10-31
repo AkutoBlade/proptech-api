@@ -62,12 +62,12 @@ router.post('/wos', bodyParser.json(),
              // Query
              const strQry =
                  `
-        INSERT INTO workOrders(conID, workers, entryType, jobCat, mat, qteID, poID, jobDesc, uID, workerStatus, workerNote, workerTimeKeeping)
+        INSERT INTO workOrders(conID, workers, entryType, jobCat, mat, qteID, poID, jobDesc, uID, workStatus, workerNote, workerTimeKeeping)
         VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
         `;
              //
              db.query(strQry,
-                 [bd.conID, bd.workers, bd.entryType, bd.jobCat, bd.mat, bd.qteID, bd.poID, bd.jobDesc, bd.uID, bd.workerStatus, bd.workerNote, bd.workerTimeKeeping],
+                 [bd.conID, bd.workers, bd.entryType, bd.jobCat, bd.mat, bd.qteID, bd.poID, bd.jobDesc, bd.uID, bd.workStatus, bd.workerNote, bd.workerTimeKeeping],
                  (err, results) => {
                      if (err) throw err
                      res.json({
@@ -76,10 +76,10 @@ router.post('/wos', bodyParser.json(),
                  })
          } catch (e) {
              console.log(`Created new wo`);
-         }
+         } 
      });
 
-router.patch('/wos/:id', (req, res) => {
+router.patch('/wos/:id', bodyParser.json(), (req, res) => {
   const bd = req.body;
   // Query
   const strQry =
@@ -89,7 +89,9 @@ WHERE woid = ${req.params.id}`;
 
   db.query(strQry, [bd.conID, bd.workers, bd.entryType, bd.jobCat, bd.mat, bd.qteID, bd.poID, bd.jobDesc,bd.uID, bd.workStatus, bd.workerNote, bd.workerTimeKeeping], (err, data) => {
       if (err) throw err;
-      res.send(`number of affected record/s: ${data.affectedRows}`);
+      res.json({
+        msg:`it is updated`
+      });
   })
 });
 
