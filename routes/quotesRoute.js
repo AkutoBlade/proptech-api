@@ -109,6 +109,7 @@ router.post("/quotes", bodyParser.json(), (req, res) => {
 //   }
 // });
 
+// Update a quote
 router.patch("/quotes/:id", (req, res) => {
   const bd = req.body;
   // Query
@@ -120,11 +121,23 @@ WHERE qteid = ${req.params.id}`;
     strQry,
     [
       bd.entryType,
-      bd.quoteName,
-      bd.quoteEmail,
-      bd.quoteNumber,
-      bd.quoteNote,
-      bd.uID,
+      bd.uid,
+      bd.cusName,
+      bd.cusNo,
+      bd.cusAddress,
+      bd.damageType,
+      bd.insCat,
+      bd.leakDetectMethod,
+      bd.dmgLocation,
+      bd.dmgStatus,
+      bd.RepRecom,
+      bd.qtDesc,
+      bd.summary,
+      bd.jobCat,
+      bd.qteMaterials,
+      bd.scope,
+      bd.total,
+      bd.addNote,
     ],
     (err, data) => {
       if (err) throw err;
