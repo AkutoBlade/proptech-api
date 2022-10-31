@@ -79,7 +79,7 @@ router.post('/wos', bodyParser.json(),
          } 
      });
 
-router.patch('/wos/:id', bodyParser.json(), (req, res) => {
+router.patch('/wos/:id', (req, res) => {
   const bd = req.body;
   // Query
   const strQry =
