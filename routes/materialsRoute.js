@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 // const jwt = require("jsonwebtoken");
 // const nodemailer = require("nodemailer")//Allows us to run mySQL functions from javascript
 
-// Get all buyers
+// Get all materials
 router.get("/materials", (req, res) => {
   const getAll = `
   SELECT * FROM materials
@@ -22,6 +22,7 @@ router.get("/materials", (req, res) => {
   });
 });
 
+// Get one material
 router.get("/materials/:id", (req, res) => {
   // Query
   const strQry = `
@@ -37,7 +38,8 @@ WHERE mid = ?;
     });
   });
 });
-// Delete product
+
+// Delete material
 router.delete("/materials/:id", (req, res) => {
   // Query
   const strQry = `
