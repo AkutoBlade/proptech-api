@@ -149,16 +149,8 @@ router.patch("/leads/", (req, res) => {
   try {
     let sql = `UPDATE leads SET ? WHERE lid= ${req.body.lid}`;
     UpdatedBy = `${new Date().toISOString().slice(0, 10)}`;
-    const {
-      lid,
-      entryType,
-      leadName,
-      leadEmail,
-      leadNumber,
-      leadNote,
-      uID,
-      UpdatedBy,
-    } = req.body;
+    const { lid, entryType, leadName, leadEmail, leadNumber, leadNote, uID } =
+      req.body;
 
     let leads = {
       lid,
