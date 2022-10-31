@@ -118,12 +118,12 @@ router.post("/leads", bodyParser.json(), async (req, res) => {
 //   }
 // });
 
-router.patch("/leads/", (req, res) => {
+router.patch("/leads/:id", (req, res) => {
   const bd = req.body;
   // Query
   const strQry = `UPDATE leads
-SET entryType = ?, leadName = ?, leadEmail = ?, leadNumber = ?, leadNote = ?, uID = ?, UpdatedBy = ?
-WHERE lid = ${req.body.id}`;
+SET lid = ?, entryType = ?, leadName = ?, leadEmail = ?, leadNumber = ?, leadNote = ?, uID = ?, UpdatedBy = ?
+WHERE lid = ${req.body.lid}`;
 
   bd.UpdatedBy = `${new Date().toISOString().slice(0, 10)}`;
 
