@@ -37,7 +37,7 @@ router.get("/dars", (req, res) => {
   });
 
 // DELETE DAR   
-router.delete('/dar/:id', (req, res) => {
+router.delete('/dars/:id', (req, res) => {
     // Query
     const strQry =
         `
@@ -54,7 +54,7 @@ router.delete('/dar/:id', (req, res) => {
 
 
   //INSERT INTO DAR
-router.post('/dar', bodyParser.json(), (req, res) => {
+router.post('/dars', bodyParser.json(), (req, res) => {
     const add =
         `
     INSERT INTO dar(claimNumber, clientName, date, reportNumber, damageType, facility, damageSeverity, inspectionCategory, leakDetectionMethod, damageLocationInternal, damageLocationExternal, damageStatusConcealed, damageStatusNotConcealed, repairActionRecommendation, executiveSummary, authBy)
@@ -70,7 +70,7 @@ router.post('/dar', bodyParser.json(), (req, res) => {
     })
 })
 
-router.patch('/dar/:id', (req, res) => {
+router.patch('/dars/:id', (req, res) => {
     const bd = req.body;
     // Query
     const strQry =
