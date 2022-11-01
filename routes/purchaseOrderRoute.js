@@ -17,7 +17,7 @@ router.get("/pos", (req, res) => {
     if (err) throw err;
     res.json({
       status: 200,
-      leads: results,
+      purchaseOrders: results,
     });
   });
 });
