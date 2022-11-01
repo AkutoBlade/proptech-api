@@ -55,7 +55,7 @@ router.post("/inventory", (req, res) => {
 // Delete product
 router.delete("/inventory/:id", (req, res) => {
   try {
-    let sql = `DELETE FROM Inventory WHERE invenID = ${req.params.id}`;
+    let sql = `DELETE FROM * Inventory WHERE invenID = ${req.params.id}`;
     con.query(sql, (err, result) => {
       if (err) throw err;
       if (result.length !== 0) {
