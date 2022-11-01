@@ -34,7 +34,7 @@ WHERE poid = ?;
       if (err) throw err;
       res.json({
           status: 200,
-          results: (results.length <= 0) ? "Sorry, no lead was found." : results
+          results: (results.length <= 0) ? "Sorry, no Purchase Order was found." : results
       })
   })
 })
@@ -75,7 +75,7 @@ router.post('/pos', bodyParser.json(),
                     });
                  })
          } catch (e) {
-             console.log(`Created new lead`);
+             console.log(`Created new purchase order`);
          }
      });
 
