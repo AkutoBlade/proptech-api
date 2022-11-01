@@ -4,6 +4,38 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const nodemailer = require("nodemailer")
 
+// Get all dars
+router.get("/dars", (req, res) => {
+    const getAll = `
+    SELECT * FROM dar
+      `;
+  
+    db.query(getAll, (err, results) => {
+      if (err) throw err;
+      res.json({
+        status: 200,
+        dar: results,
+      });
+    });
+  });
+  
+  // Get one dar
+  router.get("/dars/:id", (req, res) => {
+    // Query
+    const strQry = `
+  SELECT *
+  FROM dar
+  WHERE darid = ?;
+  `;
+    db.query(strQry, [req.params.id], (err, results) => {
+      if (err) throw err;
+      res.json({
+        status: 200,
+        results: results.length <= 0 ? "Sorry, no dar was found." : results,
+      });
+    });
+  });
+
 // DELETE DAR   
 router.delete('/dar/:id', (req, res) => {
     // Query
