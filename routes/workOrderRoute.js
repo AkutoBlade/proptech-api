@@ -14,7 +14,7 @@ router.get("/wos", (req, res) => {
     `;
 
   db.query(getAll, (err, results) => {
-    if (err) throw err;
+    // if (err) throw err;
     res.json({
       status: 200,
       workOrders: results,
@@ -87,7 +87,7 @@ router.patch('/wos/:id', (req, res) => {
 SET conID = ?, workers = ?, entryType = ?, jobCat = ?, mat = ?, qteID = ?, poID = ?, jobDesc = ?, uID = ?, workStatus = ?, workerNote = ?, workerTimeKeeping = ?
 WHERE woid = ${req.params.id}`;
 
-  db.query(strQry, [bd.conID, bd.workers, bd.entryType, bd.jobCat, bd.mat, bd.qteID, bd.poID, bd.jobDesc,bd.uID, bd.workStatus, bd.workerNote, bd.workerTimeKeeping], (err, data) => {
+  db.query(strQry, [bd.conID, bd.workers, bd.entryType, bd.jobCat, bd.mat, bd.qteID, bd.poID, bd.jobDesc, bd.uID, bd.workStatus, bd.workerNote, bd.workerTimeKeeping], (err, data) => {
       if (err) throw err;
       res.json({
         msg:`it is updated`

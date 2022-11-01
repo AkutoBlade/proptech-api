@@ -13,7 +13,7 @@ const materialsRoute = require("./routes/materialsRoute");
 const workOrderRoute = require("./routes/workOrderRoute");
 const inventoryRoute = require("./routes/InventoryRoute");
 
-app.set("port", process.env.PORT || 3000);
+app.set("port", process.env.PORT || 3306);
 app.use(express.json());
 app.use(cors());
 app.use((req, res, next) => {
