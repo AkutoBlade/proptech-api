@@ -76,7 +76,7 @@ router.patch('/dars/:id', (req, res) => {
     const strQry =
         `UPDATE dar
   SET claimNumber = ?, clientName = ?, date = ?, reportNumber = ?, damageType = ?, facility = ?, damageSeverity = ?, inspectionCategory = ?, leakDetectionMethod = ?, damageLocationInternal = ?, damageLocationExternal = ?, damageStatusConcealed = ?, damageStatusNotConcealed = ?, repairActionRecommendation = ?, executiveSummary = ?, authBy = ?
-  WHERE claimNumber = ${req.params.id}`;
+  WHERE darid = ${req.params.id}`;
     
     db.query(strQry, [bd.claimNumber, bd.clientName, bd.date, bd.reportNumber, bd.damageType, bd.facility, bd.damageSeverity, bd.inspectionCategory, bd.leakDetectionMethod, bd.damageLocationInternal, bd.damageLocationExternal, bd.damageStatusConcealed, bd.damageStatusNotConcealed, bd.repairActionRecommendation, bd.executiveSummary, bd.authBy], (err, data) => {
         if (err) throw err;
