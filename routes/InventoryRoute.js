@@ -71,7 +71,7 @@ router.delete("/inventory/:id", (req, res) => {
 });
 
 // Edit stock
-router.patch("inventory/:id", (req, res) => {
+router.patch("/inventory/:id", (req, res) => {
   try {
     let sql = `UPDATE Inventory SET ? WHERE invenID = ${req.params.id}`;
     let { Equipment, Stock } = req.body;
