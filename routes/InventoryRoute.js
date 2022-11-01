@@ -13,7 +13,7 @@ router.get("/inventory", (req, res) => {
   SELECT * FROM inventory
     `;
 
-  db.query(getAll, (err, results) => {
+  con.query(getAll, (err, results) => {
     if (err) throw err;
     res.json({
       status: 200,
