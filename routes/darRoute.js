@@ -14,7 +14,7 @@ router.get("/dars", (req, res) => {
       if (err) throw err;
       res.json({
         status: 200,
-        dar: results,
+        dars: results,
       });
     });
   });
