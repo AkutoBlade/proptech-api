@@ -4,44 +4,45 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const nodemailer = require("nodemailer")
 
-
-// All DARS
-router.get('/dar', (req, res) => {
-  const getAll = `
-      SELECT * FROM dar
-  `;
-
-  db.query(getAll, (err, results) => {
-      if (err) throw err
+// Get all dars
+router.get("/dars", (req, res) => {
+    const getAll = `
+    SELECT * FROM dar
+      `;
+  
+    db.query(getAll, (err, results) => {
+      if (err) throw err;
       res.json({
-          status: 200,
-          dar: results
+        status: 200,
+        dars: results,
       });
+    });
   });
-});
-
-// SINGLE DAR
-router.get('/dar/:id', (req, res) => {
-  const getSingle = `
-      SELECT * FROM dar WHERE claimNumber = ${req.params.id}
-  `
-
-  db.query(getSingle, (err, results) => {
-      if (err) throw err
+  
+  // Get one dar
+  router.get("/dars/:id", (req, res) => {
+    // Query
+    const strQry = `
+  SELECT *
+  FROM dar
+  WHERE darid = ?;
+  `;
+    db.query(strQry, [req.params.id], (err, results) => {
+      if (err) throw err;
       res.json({
-          status: 200,
-          dar: results
-      })
-  })
-});
+        status: 200,
+        results: results.length <= 0 ? "Sorry, no dar was found." : results,
+      });
+    });
+  });
 
 // DELETE DAR   
-router.delete('/dar/:id', (req, res) => {
+router.delete('/dars/:id', (req, res) => {
     // Query
     const strQry =
         `
   DELETE FROM  dar 
-  WHERE claimNumber = ${req.params.id};
+  WHERE darid = ${req.params.id};
   `;
     db.query(strQry, (err, data, fields) => {
         if (err) throw err;
@@ -53,7 +54,7 @@ router.delete('/dar/:id', (req, res) => {
 
 
   //INSERT INTO DAR
-router.post('/dar', bodyParser.json(), (req, res) => {
+router.post('/dars', bodyParser.json(), (req, res) => {
     const add =
         `
     INSERT INTO dar(claimNumber, clientName, date, reportNumber, damageType, facility, damageSeverity, inspectionCategory, leakDetectionMethod, damageLocationInternal, damageLocationExternal, damageStatusConcealed, damageStatusNotConcealed, repairActionRecommendation, executiveSummary, authBy)
@@ -69,7 +70,7 @@ router.post('/dar', bodyParser.json(), (req, res) => {
     })
 })
 
-router.patch('/dar/:id', (req, res) => {
+router.patch('/dars/:id', (req, res) => {
     const bd = req.body;
     // Query
     const strQry =

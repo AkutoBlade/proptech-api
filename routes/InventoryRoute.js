@@ -1,7 +1,7 @@
-const db = require("../config/dbconnection");
+const con = require("../config/dbconnection");
 const express = require("express");
 const router = express.Router();
-const bodyParser = require('body-parser');
+// const bodyParser = require("body-parser");
 // const bodyParser = require("body-parser");
 // const bcrypt = require("bcrypt");
 // const jwt = require("jsonwebtoken");
@@ -10,10 +10,10 @@ const bodyParser = require('body-parser');
 // Get all inventory
 router.get("/inventory", (req, res) => {
   const getAll = `
-  SELECT * FROM inventory
+  SELECT * FROM Inventory
     `;
 
-  db.query(getAll, (err, results) => {
+  con.query(getAll, (err, results) => {
     if (err) throw err;
     res.json({
       status: 200,
@@ -22,76 +22,78 @@ router.get("/inventory", (req, res) => {
   });
 });
 
-router.get('/inventory/:id', (req, res) => {
-  // Query
-  const strQry =
-      `
-SELECT entryType, inventoryName, inventoryEmail, inventoryNumber, inventoryNote, uID
-FROM inventory
-WHERE lid = ?;
-`;
-  db.query(strQry, [req.params.id], (err, results) => {
+// Get single
+router.get("/inventory/:id", (req, res) => {
+  try {
+    let sql = `SELECT * FROM Inventory WHERE invenID = ${req.params.id}`;
+    con.query(sql, (err, result) => {
       if (err) throw err;
-      res.json({
-          status: 200,
-          results: (results.length <= 0) ? "Sorry, no inventory was found." : results
-      })
-  })
-})
-// Delete product
-router.delete('/inventory/:id', (req, res) => {
-  // Query
-  const strQry =
-      `
-DELETE FROM  inventory 
-WHERE lid = ${req.params.id};
-`;
-  db.query(strQry, (err, data, fields) => {
-      if (err) throw err;
-      res.json({
-          msg: `Deleted`
-      });
-  })
+      res.send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
 });
 
-router.post('/inventory', bodyParser.json(),
-     (req, res) => {
-         try {
+// Insert a new item
+router.post("/inventory", (req, res) => {
+  try {
+    let sql = "INSERT INTO Inventory SET ?";
+    let { Equipment, Stock } = req.body;
+    let Inventory = { Equipment, Stock };
+    con.query(sql, Inventory, (err) => {
+      if (err) throw err;
+      res.json({ msg: "Item has been added" });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+});
 
-             const bd = req.body;
-             if(!bd.entryType || !bd.inventoryName || !bd.inventoryEmail || !bd.inventoryNumber || !bd.inventoryNote || !bd.uID){
-                res.json({
-                    msg:`empty fields`
-                });
-             }
+// Delete product
+router.delete("/inventory/:id", (req, res) => {
+  try {
+    let sql = `DELETE FROM Inventory WHERE invenID = ${req.params.id}`;
+    con.query(sql, (err, result) => {
+      if (err) throw err;
+      if (result.length !== 0) {
+        res.json("The item has been removed");
+      } else {
+        res.json({ msg: "The item you are looking for doesn't exist" });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+});
 
-             // Query
-             const strQry =
-                 `
-        INSERT INTO inventory(entryType, inventoryName, inventoryEmail, inventoryNumber, inventoryNote, uID)
-        VALUES(?, ?, ?, ?, ?, ?);
-        `;
-             //
-             db.query(strQry,
-                 [bd.entryType, bd.inventoryName, bd.inventoryEmail, bd.inventoryNumber, bd.inventoryNote, bd.uID],
-                 (err, results) => {
-                     if (err) throw err
-                     res.json({
-                        msg:`Added Item`
-                    });
-                 })
-         } catch (e) {
-             console.log(`Created new inventory`);
-         }
-     });
-
-// Get single buyer
-// router.get("inventory/:id", (req, res) => {
+// Edit stock
+router.patch("/inventory/:id", (req, res) => {
+  try {
+    let sql = `UPDATE Inventory SET ? WHERE invenID = ${req.params.id}`;
+    let { Equipment, Stock } = req.body;
+    let Inventory = { Equipment, Stock };
+    con.query(sql, Inventory, (err, result) => {
+      if (err) throw err;
+      res.json({ msg: "The item has been edited" });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+});
+// // Update time the stock was borrowed
+// router.patch("/inventory/:id", (req, res) => {
 //   try {
-//     let sql = `SELECT * FROM inventory WHERE bid = ${req.params.bid}`; //Use backticks (`) whenever you want to use something that involves $(not money, the sign)
-//     con.query(sql, (err, result) => {
+//     let sql = `UPDATE Inventory SET ? WHERE invenID = ${req.params.id}`;
+//     const { TakenOut } = req.body;
+//     let Inventory = { TakenOut };
+//     con.query(sql, Inventory, (req, res) => {
 //       if (err) throw err;
-//       res.send(result);
+//       res.json("Stock has been taken out.");
 //     });
 //   } catch (error) {
 //     console.log(error);
@@ -99,21 +101,20 @@ router.post('/inventory', bodyParser.json(),
 //   }
 // });
 
-router.patch('/inventory/:id', (req, res) => {
-  const bd = req.body;
-  // Query
-  const strQry =
-      `UPDATE inventory
-SET entryType = ?, inventoryName = ?, inventoryEmail = ?, inventoryNumber = ?, inventoryNote = ?, uID = ?
-WHERE lid = ${req.params.id}`;
-
-  db.query(strQry, [bd.entryType, bd.inventoryName, bd.inventoryEmail, bd.inventoryNumber, bd.inventoryNote, bd.uID], (err, data) => {
-      if (err) throw err;
-      res.send(`number of affected record/s: ${data.affectedRows}`);
-  })
-});
-
+// //Update the time the stock was brought back
+// router.patch("/inventory/:id", (req, res) => {
+//   try {
+//     let sql = `UPDATE Inventory SET ? WHERE invenID = ${req.params.id}`;
+//     const { TimeIn } = req.body;
+//     let Inventory = { TimeIn };
+//     con.query(sql, Inventory, (req, res) => {
+//       if (err) throw err;
+//       res.json("Stock has been brought back in.");
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(400).send(error);
+//   }
+// });
 
 module.exports = router;
-// Delete a user
-// Dependent on the database as it will be linked to a user.

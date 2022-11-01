@@ -27,7 +27,7 @@ router.get('/PO/:id', (req, res) => {
   const strQry =
       `
 SELECT entryType, leadName, leadEmail, leadNumber, leadNote, uID
-FROM leads
+FROM purchaseOrder
 WHERE poid = ?;
 `;
   db.query(strQry, [req.params.id], (err, results) => {
@@ -43,7 +43,7 @@ router.delete('/PO/:id', (req, res) => {
   // Query
   const strQry =
       `
-DELETE FROM  leads 
+DELETE FROM  purchaseOrder 
 WHERE poid = ${req.params.id};
 `;
   db.query(strQry, (err, data, fields) => {
@@ -62,8 +62,8 @@ router.post('/PO', bodyParser.json(),
              // Query
              const strQry =
                  `
-        INSERT INTO leads(entryType, leadName, leadEmail, leadNumber, leadNote, uID)
-        VALUES(?, ?, ?, ?, ?, ?);
+        INSERT INTO purchaseOrder(qteID, otp, sID, mat,)
+        VALUES(?, ?, ?, ?);
         `;
              //
              db.query(strQry,
@@ -97,8 +97,8 @@ router.patch('/PO/:id', (req, res) => {
   const bd = req.body;
   // Query
   const strQry =
-      `UPDATE leads
-SET entryType = ?, leadName = ?, leadEmail = ?, leadNumber = ?, leadNote = ?, uID = ?
+      `UPDATE purchaseOrder
+SET qteID = ?, otp = ?, sID = ?, mat = ?
 WHERE poid = ${req.params.id}`;
 
   db.query(strQry, [bd.entryType, bd.leadName, bd.leadEmail, bd.leadNumber, bd.leadNote, bd.uID], (err, data) => {

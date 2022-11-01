@@ -114,14 +114,14 @@ router.patch("/quotes/:id", (req, res) => {
   const bd = req.body;
   // Query
   const strQry = `UPDATE quotes
-SET entryType = ?, uid = ?, cusName = ?, cusNo = ?, cusAddress = ?, damageType = ?, insCat = ?, leakDetectMethod = ?, dmgLocation = ?, dmgStatus = ?, RepRecom = ?, qtDesc = ?, summary = ?, jobCat = ?, qteMaterials = ?, scope = ?, total = ?, addNote = ?
+SET entryType = ?, uID = ?, cusName = ?, cusNo = ?, cusAddress = ?, damageType = ?, insCat = ?, leakDetectMethod = ?, dmgLocation = ?, dmgStatus = ?, RepRecom = ?, qtDesc = ?, summary = ?, jobCat = ?, qteMaterials = ?, scope = ?, total = ?, addNote = ?
 WHERE qteid = ${req.params.id}`;
 
   db.query(
     strQry,
     [
       bd.entryType,
-      bd.uid,
+      bd.uID,
       bd.cusName,
       bd.cusNo,
       bd.cusAddress,
