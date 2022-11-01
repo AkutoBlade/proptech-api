@@ -4,15 +4,13 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const nodemailer = require("nodemailer")
 
-
-
 // DELETE DAR   
 router.delete('/dar/:id', (req, res) => {
     // Query
     const strQry =
         `
   DELETE FROM  dar 
-  WHERE claimNumber = ${req.params.id};
+  WHERE darid = ${req.params.id};
   `;
     db.query(strQry, (err, data, fields) => {
         if (err) throw err;
