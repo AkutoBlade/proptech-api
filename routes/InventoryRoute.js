@@ -10,10 +10,10 @@ const router = express.Router();
 // Get all inventory
 router.get("/inventory", (req, res) => {
   const getAll = `
-  SELECT * FROM inventory
+  SELECT * FROM Inventory
     `;
 
-  db.query(getAll, (err, results) => {
+  con.query(getAll, (err, results) => {
     if (err) throw err;
     res.json({
       status: 200,
@@ -35,23 +35,6 @@ router.get("/inventory/:id", (req, res) => {
     res.status(400).send(error);
   }
 });
-// Delete product
-router.delete("/inventory/:id", (req, res) => {
-  try {
-    let sql = `DELETE FROM Inventory WHERE invenID = ${req.params.id}`;
-    con.query(sql, (err) => {
-      if (err) throw err;
-      if (result.length !== 0) {
-        res.json("The inventory has been removed");
-      } else {
-        res.json("The item you are looking for doesn't exist");
-      }
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
-  }
-});
 
 // Insert a new item
 router.post("/inventory", (req, res) => {
@@ -61,7 +44,7 @@ router.post("/inventory", (req, res) => {
     let Inventory = { Equipment, Stock };
     con.query(sql, Inventory, (err) => {
       if (err) throw err;
-      res.json("Item has been added");
+      res.json({ msg: "Item has been added" });
     });
   } catch (error) {
     console.log(error);
@@ -69,6 +52,39 @@ router.post("/inventory", (req, res) => {
   }
 });
 
+// Delete product
+router.delete("/inventory/:id", (req, res) => {
+  try {
+    let sql = `DELETE FROM Inventory WHERE invenID = ${req.params.id}`;
+    con.query(sql, (err, result) => {
+      if (err) throw err;
+      if (result.length !== 0) {
+        res.json("The item has been removed");
+      } else {
+        res.json({ msg: "The item you are looking for doesn't exist" });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+});
+
+// Edit stock
+router.patch("/inventory/:id", (req, res) => {
+  try {
+    let sql = `UPDATE Inventory SET ? WHERE invenID = ${req.params.id}`;
+    let { Equipment, Stock } = req.body;
+    let Inventory = { Equipment, Stock };
+    con.query(sql, Inventory, (err, result) => {
+      if (err) throw err;
+      res.json({ msg: "The item has been edited" });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+});
 // // Update time the stock was borrowed
 // router.patch("/inventory/:id", (req, res) => {
 //   try {
