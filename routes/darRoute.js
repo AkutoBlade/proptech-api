@@ -5,35 +5,6 @@ const bodyParser = require('body-parser');
 const nodemailer = require("nodemailer")
 
 
-// All DARS
-router.get('/dar', (req, res) => {
-  const getAll = `
-      SELECT * FROM dar
-  `;
-
-  db.query(getAll, (err, results) => {
-      if (err) throw err
-      res.json({
-          status: 200,
-          dar: results
-      });
-  });
-});
-
-// SINGLE DAR
-router.get('/dar/:id', (req, res) => {
-  const getSingle = `
-      SELECT * FROM dar WHERE claimNumber = ${req.params.id}
-  `
-
-  db.query(getSingle, (err, results) => {
-      if (err) throw err
-      res.json({
-          status: 200,
-          dar: results
-      })
-  })
-});
 
 // DELETE DAR   
 router.delete('/dar/:id', (req, res) => {
