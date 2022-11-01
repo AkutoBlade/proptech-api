@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 // const nodemailer = require("nodemailer")//Allows us to run mySQL functions from javascript
 
 // Get all buyers
-router.get("/PO", (req, res) => {
+router.get("/pos", (req, res) => {
   const getAll = `
   SELECT * FROM purchaseOrder
     `;
@@ -22,11 +22,11 @@ router.get("/PO", (req, res) => {
   });
 });
 
-router.get('/PO/:id', (req, res) => {
+router.get('/pos/:id', (req, res) => {
   // Query
   const strQry =
       `
-SELECT entryType, leadName, leadEmail, leadNumber, leadNote, uID
+SELECT qteID, otp, sID, mat
 FROM purchaseOrder
 WHERE poid = ?;
 `;
@@ -39,7 +39,7 @@ WHERE poid = ?;
   })
 })
 // Delete product
-router.delete('/PO/:id', (req, res) => {
+router.delete('/pos/:id', (req, res) => {
   // Query
   const strQry =
       `
@@ -54,7 +54,7 @@ WHERE poid = ${req.params.id};
   })
 });
 
-router.post('/PO', bodyParser.json(),
+router.post('/pos', bodyParser.json(),
      (req, res) => {
          try {
 
@@ -62,12 +62,12 @@ router.post('/PO', bodyParser.json(),
              // Query
              const strQry =
                  `
-        INSERT INTO purchaseOrder(qteID, otp, sID, mat,)
+        INSERT INTO purchaseOrder(qteID, otp, sID, mat)
         VALUES(?, ?, ?, ?);
         `;
              //
              db.query(strQry,
-                 [bd.entryType, bd.leadName, bd.leadEmail, bd.leadNumber, bd.leadNote, bd.uID],
+                 [bd.qteID, bd.otp, bd.sID, bd.mat],
                  (err, results) => {
                      if (err) throw err
                      res.json({
@@ -93,7 +93,7 @@ router.post('/PO', bodyParser.json(),
 //   }
 // });
 
-router.patch('/PO/:id', (req, res) => {
+router.patch('/pos/:id', (req, res) => {
   const bd = req.body;
   // Query
   const strQry =
@@ -101,7 +101,7 @@ router.patch('/PO/:id', (req, res) => {
 SET qteID = ?, otp = ?, sID = ?, mat = ?
 WHERE poid = ${req.params.id}`;
 
-  db.query(strQry, [bd.entryType, bd.leadName, bd.leadEmail, bd.leadNumber, bd.leadNote, bd.uID], (err, data) => {
+  db.query(strQry, [bd.qteID, bd.otp, bd.sID, bd.mat], (err, data) => {
       if (err) throw err;
       res.send(`number of affected record/s: ${data.affectedRows}`);
   })
