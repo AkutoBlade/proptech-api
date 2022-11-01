@@ -10,7 +10,7 @@ const router = express.Router();
 // Get all inventory
 router.get("/inventory", (req, res) => {
   const getAll = `
-  SELECT * FROM inventory
+  SELECT * FROM Inventory
     `;
 
   con.query(getAll, (err, results) => {
@@ -56,10 +56,10 @@ router.post("/inventory", (req, res) => {
 router.delete("/inventory/:id", (req, res) => {
   try {
     let sql = `DELETE FROM Inventory WHERE invenID = ${req.params.id}`;
-    con.query(sql, (err) => {
+    con.query(sql, (err, result) => {
       if (err) throw err;
       if (result.length !== 0) {
-        res.json("The inventory has been removed");
+        res.json("The item has been removed");
       } else {
         res.json({ msg: "The item you are looking for doesn't exist" });
       }
