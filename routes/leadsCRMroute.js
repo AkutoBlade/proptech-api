@@ -1,8 +1,8 @@
 const db = require("../config/dbconnection");
 const express = require("express");
 const router = express.Router();
-const bodyParser = require('body-parser');
-const nodemailer = require("nodemailer")
+const bodyParser = require("body-parser");
+const nodemailer = require("nodemailer");
 // const bodyParser = require("body-parser");
 // const bcrypt = require("bcrypt");
 // const jwt = require("jsonwebtoken");
@@ -23,84 +23,88 @@ router.get("/leads", (req, res) => {
   });
 });
 
-router.get('/leads/:id', (req, res) => {
+router.get("/leads/:id", (req, res) => {
   // Query
-  const strQry =
-      `
+  const strQry = `
 SELECT *
 FROM leads
 WHERE lid = ?;
 `;
   db.query(strQry, [req.params.id], (err, results) => {
-      if (err) throw err;
-      res.json({
-          status: 200,
-          results: (results.length <= 0) ? "Sorry, no lead was found." : results
-      })
-  })
-})
+    if (err) throw err;
+    res.json({
+      status: 200,
+      results: results.length <= 0 ? "Sorry, no lead was found." : results,
+    });
+  });
+});
 
 // Delete product
-router.delete('/leads/:id', (req, res) => {
+router.delete("/leads/:id", (req, res) => {
   // Query
-  const strQry =
-      `
+  const strQry = `
 DELETE FROM  leads 
 WHERE lid = ${req.params.id};
 `;
   db.query(strQry, (err, data, fields) => {
-      if (err) throw err;
-      res.json({
-          msg: `Deleted`
-      });
-  })
+    if (err) throw err;
+    res.json({
+      msg: `Deleted`,
+    });
+  });
 });
 
-router.post('/leads', bodyParser.json(),
-    async (req, res) => {
-         try {
+router.post("/leads", bodyParser.json(), async (req, res) => {
+  try {
+    const bd = req.body;
 
-             const bd = req.body;
-
-    
-             // Query
-             const strQry =
-                 `
-        INSERT INTO leads(entryType, leadName, leadEmail, leadNumber, leadNote, uID)
-        VALUES(?, ?, ?, ?, ?, ?);
+    // Query
+    const strQry = `
+        INSERT INTO leads(entryType, leadName, leadEmail, leadNumber,leadExtraNumber,leadArea,leadAddress, leadNote, uID)
+        VALUES(?, ?, ?, ?, ?, ?,?,?,?);
         `;
- 
 
-             db.query(strQry,
-                 [bd.entryType, bd.leadName, bd.leadEmail, bd.leadNumber, bd.leadNote, bd.uID],
-                 (err, results) => {
-                     if (err) throw err
-                     res.json({
-                        msg:`Added Item`
-                    });
-                    let mailTransporter = nodemailer.createTransport({
-                      service: "gmail",
-                      auth: {
-                          user: "rared.isaacs@gmail.com",
-                          pass: "jsnrsswvfhlbxcbs"
-                      }
-                  });
-                  let details = {
-                    from: "rared.isaacs@gmail.com",
-                    to: `${bd.leadEmail}`,
-                    subject: "Sabindi Group Global",
-                    text: "Welcome To Sabindi Group Global"
-                }
-                mailTransporter.sendMail(details,(err)=>{
-                  if(err) throw err
-                      console.log("Email have been sent");
-              })
- 
-                 })
-         } catch (e) {
-             console.log(`Created new lead`);
-         }
-     });
+    db.query(
+      strQry,
+      [
+        bd.entryType,
+        bd.leadName,
+        bd.leadEmail,
+        bd.leadNumber,
+        bd.leadExtraNumber,
+        bd.leadArea,
+        bd.leadAddress,
+        bd.leadNote,
+        bd.uID,
+      ],
+      (err, results) => {
+        if (err) throw err;
+        res.json({
+          msg: `Added Item`,
+        });
+        let mailTransporter = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+            user: "rared.isaacs@gmail.com",
+            pass: "jsnrsswvfhlbxcbs",
+          },
+        });
+        let details = {
+          from: "rared.isaacs@gmail.com",
+          to: `${bd.leadEmail}`,
+          subject: "Sabindi Group Global",
+          text: "Welcome To Sabindi Group Global",
+        };
+        mailTransporter.sendMail(details, (err) => {
+          if (err) throw err;
+          console.log("Email have been sent");
+        });
+      }
+    );
+  } catch (e) {
+    console.log(`Created new lead`);
+  }
+});
 
 // Get single buyer
 // router.get("leads/:id", (req, res) => {
@@ -116,24 +120,37 @@ router.post('/leads', bodyParser.json(),
 //   }
 // });
 
-router.put('/leads/:id',bodyParser.json(), (req, res) => {
+router.put("/leads/:id", bodyParser.json(), (req, res) => {
   const bd = req.body;
   // Query
-  const strQry =
-      `UPDATE leads
-SET entryType = ?, leadName = ?, leadEmail = ?, leadNumber = ?, leadNote = ?, uID = ?, UpdatedBy = ?
+  const strQry = `UPDATE leads
+SET entryType = ?, leadName = ?, leadEmail = ?, leadNumber = ?, leadExtraNumber = ?,leadArea = ?,leadAddress = ?, leadNote = ?, uID = ?, UpdatedBy = ?
 WHERE lid = ${req.params.id}`;
 
-bd.UpdatedBy= `${new Date().toISOString().slice(0, 10)}`;
+  bd.UpdatedBy = `${new Date().toISOString().slice(0, 10)}`;
 
-  db.query(strQry, [bd.entryType, bd.leadName, bd.leadEmail, bd.leadNumber, bd.leadNote, bd.uID, bd.UpdatedBy], (err, data) => {
+  db.query(
+    strQry,
+    [
+      bd.entryType,
+      bd.leadName,
+      bd.leadEmail,
+      bd.leadNumber,
+      bd.leadExtraNumber,
+      bd.leadArea,
+      bd.leadAddress,
+      bd.leadNote,
+      bd.uID,
+      bd.UpdatedBy,
+    ],
+    (err, data) => {
       if (err) throw err;
       res.json({
-        msg:data
-    });
-  })
+        msg: data,
+      });
+    }
+  );
 });
-
 
 module.exports = router;
 // Delete a user
