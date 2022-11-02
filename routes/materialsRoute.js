@@ -59,13 +59,21 @@ router.post("/materials", bodyParser.json(), (req, res) => {
     const bd = req.body;
     // Query
     const strQry = `
-        INSERT INTO materials(matName, matDesc, MatDimensions, MatCat, sID)
-        VALUES(?, ?, ?, ?, ?);
+        INSERT INTO materials(matName, matDesc, matSpecs, MatCat, cost, matUnit, sID)
+        VALUES(?, ?, ?, ?, ?, ?, ?);
         `;
     //
     db.query(
       strQry,
-      [bd.matName, bd.matDesc, bd.MatDimensions, bd.MatCat, bd.sID],
+      [
+        bd.matName,
+        bd.matDesc,
+        bd.matSpecs,
+        bd.MatCat,
+        bd.cost,
+        bd.matUnit,
+        bd.sID,
+      ],
       (err, results) => {
         if (err) throw err;
         res.json({
@@ -96,18 +104,19 @@ router.patch("/materials/:id", (req, res) => {
   const bd = req.body;
   // Query
   const strQry = `UPDATE materials
-SET matName= ?, matDesc= ?, MatDimensions= ?, MatCat= ?, sID= ?
+SET matName= ?, matDesc= ?, matSpecs= ?, MatCat= ?,cost = ?,matUnit = ?,  sID= ?
 WHERE mid = ${req.params.id}`;
 
   db.query(
     strQry,
     [
-      bd.entryType,
-      bd.leadName,
-      bd.leadEmail,
-      bd.leadNumber,
-      bd.leadNote,
-      bd.uID,
+      bd.matName,
+      bd.matDesc,
+      bd.matSpecs,
+      bd.MatCat,
+      bd.cost,
+      bd.matUnit,
+      bd.sID,
     ],
     (err, data) => {
       if (err) throw err;
