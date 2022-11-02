@@ -6,8 +6,8 @@ const bodyParser = require("body-parser");
 
 
 //Get specific user's cart
-router.get('/quotes/:id/mat', (req, res) => {
-  let sql = `SELECT mat FROM quotes WHERE qteid = ${req.params.id}`
+router.get('/users/:id/mat', (req, res) => {
+  let sql = `SELECT mat FROM users WHERE uid = ${req.params.id}`
   db.query(sql, (err, results) => {
     if (err) throw err
     res.json({
@@ -18,10 +18,10 @@ router.get('/quotes/:id/mat', (req, res) => {
 })
 
 //Add items to the user's specific cart
-router.post('/quotes/:id/mat', bodyParser.json(), (req, res) => {
+router.post('/users/:id/mat', bodyParser.json(), (req, res) => {
   try {
     let bd = req.body
-    let sql = `SELECT mat FROM quotes WHERE qteid = ${req.params.id};`;
+    let sql = `SELECT mat FROM users WHERE uid = ${req.params.id};`;
     db.query(sql, (err, results) => {
       if (err) throw err;
       if (results.length > 0) {
@@ -45,7 +45,7 @@ router.post('/quotes/:id/mat', bodyParser.json(), (req, res) => {
         }
         mat.push(material)
 
-        let sql1 = `UPDATE quotes SET mat = ? WHERE qteid = ${req.params.id}`
+        let sql1 = `UPDATE users SET mat = ? WHERE uid = ${req.params.id}`
         db.query(sql1, [JSON.stringify(mat)], (err, results) => {
           if (err) throw err
           res.json({
@@ -63,9 +63,9 @@ router.post('/quotes/:id/mat', bodyParser.json(), (req, res) => {
 });
 
 //Delete items from the specific user's cart
-router.delete('/quotes/:id/mat', bodyParser.json(), (req, res) => {
+router.delete('/users/:id/mat', bodyParser.json(), (req, res) => {
   let bd = req.body
-  let sql = `UPDATE quotes SET mat = null WHERE qteid = ${req.params.id}`
+  let sql = `UPDATE users SET mat = null WHERE uid = ${req.params.id}`
   db.query(sql, (err, results) => {
     if (err) throw err
     res.json({
