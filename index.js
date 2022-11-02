@@ -12,6 +12,7 @@ const purchaseOrderRoute = require("./routes/purchaseOrderRoute");
 const materialsRoute = require("./routes/materialsRoute");
 const workOrderRoute = require("./routes/workOrderRoute");
 const inventoryRoute = require("./routes/InventoryRoute");
+const materialcartRoute = require("./routes/materialcartRoute")
 
 app.set("port", process.env.PORT || 3306);
 app.use(express.json());
@@ -42,6 +43,7 @@ app.use(
   workOrderRoute,
   darRoute,
   inventoryRoute,
+  materialcartRoute,
   express.json(),
   express.urlencoded({
     extended: true,
