@@ -75,46 +75,46 @@ router.delete('/users/:id/mat', bodyParser.json(), (req, res) => {
 });
 
  //Delete specific item
-// router.delete('/users/:user_id/cart/:product_id', (req, res) => {
-//   const delSingleCartId = `
-//         SELECT cart FROM users
-//         WHERE user_id = ${req.params.user_id}
-//     `
-//   db.query(delSingleCartId, (err, results) => {
-//     if (err) throw err;
-//     if (results.length > 0) {
-//       if (results[0].cart != null) {
-//         const result = JSON.parse(results[0].cart).filter((cart) => {
-//           return cart.product_id != req.params.product_id;
-//         })
-//         result.forEach((cart, i) => {
-//           cart.product_id = i + 1
-//         });
-//         const query = `
-//                     UPDATE users
-//                     SET cart = ?
-//                     WHERE user_id = ${req.params.user_id}
-//                 `
-//         db.query(query, [JSON.stringify(result)], (err, results) => {
-//           if (err) throw err;
-//           res.json({
-//             status: 200,
-//             result: "Successfully deleted item from cart"
-//           });
-//         })
-//       } else {
-//         res.json({
-//           status: 400,
-//           result: "This user has an empty cart"
-//         })
-//       }
-//     } else {
-//       res.json({
-//         status: 400,
-//         result: "There is no user with that id"
-//       });
-//     }
-//   })
-// })
+router.delete('/users/:user_id/cart/:mat_id', (req, res) => {
+  const delSingleMatId = `
+        SELECT mat FROM users
+        WHERE uid = ${req.params.user_id}
+    `
+  db.query(delSingleMatId, (err, results) => {
+    if (err) throw err;
+    if (results.length > 0) {
+      if (results[0].mat != null) {
+        const result = JSON.parse(results[0].mat).filter((mat) => {
+          return mat.mat_id != req.params.mat_id;
+        })
+        result.forEach((mat, i) => {
+          mat.mat_id = i + 1
+        });
+        const query = `
+                    UPDATE users
+                    SET mat = ?
+                    WHERE uid = ${req.params.user_id}
+                `
+        db.query(query, [JSON.stringify(result)], (err, results) => {
+          if (err) throw err;
+          res.json({
+            status: 200,
+            result: "Successfully deleted item from cart"
+          });
+        })
+      } else {
+        res.json({
+          status: 400,
+          result: "This user has an empty cart"
+        })
+      }
+    } else {
+      res.json({
+        status: 400,
+        result: "There is no user with that id"
+      });
+    }
+  })
+})
 
 module.exports = router;
