@@ -43,7 +43,7 @@ app.use(
   workOrderRoute,
   darRoute,
   inventoryRoute,
-  materialcartRoute
+  materialcartRoute,
   express.json(),
   express.urlencoded({
     extended: true,
