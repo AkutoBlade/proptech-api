@@ -63,16 +63,16 @@ router.post('/quotes/:id/mat', bodyParser.json(), (req, res) => {
 });
 
 //Delete items from the specific user's cart
-// router.delete('/users/:id/cart', bodyParser.json(), (req, res) => {
-//   let bd = req.body
-//   let sql = `UPDATE users SET cart = null WHERE user_id = ${req.params.id}`
-//   db.query(sql, (err, results) => {
-//     if (err) throw err
-//     res.json({
-//       results: `${req.params.id}`
-//     })
-//   })
-// });
+router.delete('/quotes/:id/mat', bodyParser.json(), (req, res) => {
+  let bd = req.body
+  let sql = `UPDATE quotes SET mat = null WHERE qteid = ${req.params.id}`
+  db.query(sql, (err, results) => {
+    if (err) throw err
+    res.json({
+      results: `${req.params.id}`
+    })
+  })
+});
 
  //Delete specific item
 // router.delete('/users/:user_id/cart/:product_id', (req, res) => {
